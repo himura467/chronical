@@ -1,0 +1,12 @@
+{
+  "recommendations": [
+    // Linting / Formatting
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "streetsidesoftware.code-spell-checker",
+    // Showing todo comments
+    "gruntfuggly.todo-tree",
+    // Debugging
+    "ms-vscode.vscode-js-profile-flame"
+  ]
+}
