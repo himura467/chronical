@@ -1,5 +1,7 @@
 {
   "recommendations": [
+    // IntelliSense
+    "rust-lang.rust-analyzer",
     // Linting / Formatting
     "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode",
@@ -7,6 +9,7 @@
     // Showing todo comments
     "gruntfuggly.todo-tree",
     // Debugging
-    "ms-vscode.vscode-js-profile-flame"
+    "ms-vscode.vscode-js-profile-flame",
+    "vadimcn.vscode-lldb"
   ]
 }

@@ -11,11 +11,17 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true
   },
+  "[rust]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "rust-lang.rust-analyzer"
+  },
   "[markdown]": {
     "editor.formatOnSave": true
   },
-  // Linting using ESLint.
+  // Linting
   "eslint.validate": ["javascript", "typescript"],
+  "rust-analyzer.checkOnSave": true,
+  "rust-analyzer.check.command": "clippy",
   // Ensure enough terminal history is preserved when running tests
   "terminal.integrated.scrollback": 10000,
   // Configure todo-tree to exclude node_modules
