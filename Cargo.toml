@@ -3,6 +3,9 @@ name = "chronical"
 version = "0.1.0"
 edition = "2024"
 
+[lib]
+crate-type = ["cdylib"]
+
 [dependencies]
 napi = "3.7.1"
 napi-derive = "3.4.1"
