@@ -59,6 +59,7 @@ name = "chronical"
 version = "0.1.0"
 dependencies = [
  "napi",
+ "napi-build",
  "napi-derive",
  "rrule",
 ]

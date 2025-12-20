@@ -7,3 +7,6 @@ edition = "2024"
 napi = "3.7.1"
 napi-derive = "3.4.1"
 rrule = "0.14.0"
+
+[build-dependencies]
+napi-build = "2.3.1"
