@@ -18,5 +18,8 @@
     "email": "mitarashidango0927@gmail.com"
   },
   "license": "MIT",
-  "packageManager": "pnpm@10.18.0"
+  "packageManager": "pnpm@10.18.0",
+  "dependencies": {
+    "temporal-polyfill": "^0.3.0"
+  }
 }
