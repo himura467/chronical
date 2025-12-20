@@ -4,4 +4,6 @@ use thiserror::Error;
 pub enum ParseError {
     #[error("`{0}` is not a valid frequency.")]
     InvalidFrequency(String),
+    #[error("`{0}` is not a valid weekday.")]
+    InvalidWeekday(String),
 }
