@@ -4,7 +4,12 @@
   "description": "An implementation of RRule as defined in iCalendar (RFC 5545) using Temporal written in Rust",
   "main": "index.js",
   "scripts": {
-    "preinstall": "npx only-allow pnpm"
+    "preinstall": "npx only-allow pnpm",
+    "artifacts": "napi artifacts",
+    "build": "napi build --platform --release",
+    "build:debug": "napi build --platform",
+    "prepublishOnly": "napi prepublish -t npm",
+    "version": "napi version"
   },
   "keywords": [
     "icalendar",
