@@ -5,3 +5,4 @@ edition = "2024"
 
 [dependencies]
 napi = "3.7.1"
+napi-derive = "3.4.1"
