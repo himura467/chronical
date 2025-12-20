@@ -1,0 +1,28 @@
+{
+  "name": "chronical",
+  "version": "0.1.0",
+  "description": "An implementation of RRule as defined in iCalendar (RFC 5545) using Temporal written in Rust",
+  "main": "index.js",
+  "scripts": {
+    "preinstall": "npx only-allow pnpm"
+  },
+  "keywords": [
+    "icalendar",
+    "rrule",
+    "temporal",
+    "rust",
+    "rs"
+  ],
+  "author": {
+    "name": "Akito Shitara",
+    "email": "mitarashidango0927@gmail.com"
+  },
+  "license": "MIT",
+  "packageManager": "pnpm@10.18.0",
+  "dependencies": {
+    "temporal-polyfill": "^0.3.0"
+  },
+  "devDependencies": {
+    "@napi-rs/cli": "^3.5.0"
+  }
+}
