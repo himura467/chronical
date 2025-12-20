@@ -21,5 +21,8 @@
   "packageManager": "pnpm@10.18.0",
   "dependencies": {
     "temporal-polyfill": "^0.3.0"
+  },
+  "devDependencies": {
+    "@napi-rs/cli": "^3.5.0"
   }
 }
