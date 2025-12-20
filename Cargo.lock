@@ -62,6 +62,7 @@ dependencies = [
  "napi-build",
  "napi-derive",
  "rrule",
+ "thiserror",
 ]
 
 [[package]]
