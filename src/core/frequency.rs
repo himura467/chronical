@@ -1,6 +1,7 @@
 use crate::error::ParseError;
 use std::str::FromStr;
 
+#[derive(Copy, Clone)]
 pub enum Frequency {
     Yearly,
     Monthly,
