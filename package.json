@@ -1,7 +1,11 @@
 {
   "name": "chronical",
   "version": "0.1.0",
-  "description": "An implementation of RRule as defined in iCalendar (RFC 5545) using Temporal written in Rust",
+  "description": "An implementation of RRule as defined in iCalendar (RFC 5545) using Temporal API written in Rust",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/himura467/chronical.git"
+  },
   "main": "index.js",
   "types": "index.d.ts",
   "scripts": {
