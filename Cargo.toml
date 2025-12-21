@@ -7,6 +7,8 @@ edition = "2024"
 crate-type = ["cdylib"]
 
 [dependencies]
+chrono = "0.4.42"
+chrono-tz = "0.10.4"
 napi = "3.7.1"
 napi-derive = "3.4.1"
 rrule = "0.14.0"
