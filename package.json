@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "description": "An implementation of RRule as defined in iCalendar (RFC 5545) using Temporal written in Rust",
   "main": "index.js",
+  "types": "index.d.ts",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "artifacts": "napi artifacts",
@@ -29,5 +30,25 @@
   },
   "devDependencies": {
     "@napi-rs/cli": "^3.5.0"
+  },
+  "files": [
+    "index.js",
+    "index.d.ts"
+  ],
+  "napi": {
+    "binaryName": "chronical",
+    "targets": [
+      "aarch64-apple-darwin",
+      "aarch64-pc-windows-msvc",
+      "aarch64-unknown-linux-gnu",
+      "i686-pc-windows-msvc",
+      "i686-unknown-linux-gnu",
+      "x86_64-pc-windows-gnu",
+      "x86_64-pc-windows-msvc",
+      "x86_64-unknown-linux-gnu"
+    ]
+  },
+  "engines": {
+    "node": ">= 20"
   }
 }

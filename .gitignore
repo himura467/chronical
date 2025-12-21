@@ -3,6 +3,7 @@
 
 # build output
 /dist
+*.node
 
 # Added by cargo
 /target
