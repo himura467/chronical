@@ -73,6 +73,7 @@ jobs:
           node-version-file: ".node-version"
           cache: "pnpm"
           cache-dependency-path: "pnpm-lock.yaml"
+          registry-url: "https://registry.npmjs.org"
       - name: Install dependencies
         run: pnpm install
       - name: Download all artifacts
@@ -90,3 +91,5 @@ jobs:
         run: |
           pnpm prepublishOnly --no-gh-release
           pnpm publish --provenance --access public --no-git-checks
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
