@@ -1,4 +1,4 @@
-use crate::core::weekday::Weekday;
+use super::weekday::Weekday;
 use crate::error::ParseError;
 use std::str::FromStr;
 
@@ -25,7 +25,8 @@ fn extract_weekday(s: &str) -> Result<Weekday, ParseError> {
 }
 
 fn extract_number(s: &str) -> Result<i16, ParseError> {
-    s[..s.len() - 2].parse::<i16>()
+    s[..s.len() - 2]
+        .parse::<i16>()
         .map_err(|_| ParseError::InvalidWeekday(s.to_string()))
 }
 
