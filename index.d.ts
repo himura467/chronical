@@ -5,12 +5,10 @@ export declare class RRule {
   get freq(): Frequency
 }
 
-export declare const enum Frequency {
-  Yearly = 'Yearly',
-  Monthly = 'Monthly',
-  Weekly = 'Weekly',
-  Daily = 'Daily',
-  Hourly = 'Hourly',
-  Minutely = 'Minutely',
-  Secondly = 'Secondly'
-}
+export type Frequency =  'Yearly'|
+'Monthly'|
+'Weekly'|
+'Daily'|
+'Hourly'|
+'Minutely'|
+'Secondly';

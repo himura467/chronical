@@ -13,11 +13,11 @@ npm install chronical
 ## Quick Start
 
 ```typescript
-import { RRule, Frequency } from "chronical";
+import { RRule } from "chronical";
 
 // Create a daily recurring event
-const rule = new RRule(Frequency.Daily);
-console.log(rule.freq); // 'Daily'
+const rule = new RRule("Daily");
+console.log(rule.freq); // "Daily"
 ```
 
 ## License
