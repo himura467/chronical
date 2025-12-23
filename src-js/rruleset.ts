@@ -1,5 +1,5 @@
 import { Temporal } from "temporal-polyfill";
-import { RRuleSet as NativeRRuleSet } from "./generated";
+import { RRuleSet as NativeRRuleSet } from "./generated/index.js";
 
 export class RRuleSet {
   private native: NativeRRuleSet;
