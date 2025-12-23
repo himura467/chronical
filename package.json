@@ -6,13 +6,15 @@
     "type": "git",
     "url": "git+ssh://git@github.com/himura467/chronical.git"
   },
-  "main": "index.js",
-  "types": "index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "artifacts": "napi artifacts",
-    "build": "napi build --no-const-enum --platform --release --output-dir src-js/generated",
-    "build:debug": "napi build --no-const-enum --platform --output-dir src-js/generated",
+    "build": "pnpm build:rust && pnpm build:ts",
+    "build:rust": "napi build --no-const-enum --platform --release --output-dir src-js/generated",
+    "build:rust:debug": "napi build --no-const-enum --platform --output-dir src-js/generated",
+    "build:ts": "tsgo src-js/index.ts --outDir dist",
     "prepublishOnly": "napi prepublish -t npm",
     "version": "napi version"
   },
@@ -37,8 +39,7 @@
     "@typescript/native-preview": "7.0.0-dev.20251223.1"
   },
   "files": [
-    "index.js",
-    "index.d.ts"
+    "dist"
   ],
   "napi": {
     "binaryName": "chronical",
