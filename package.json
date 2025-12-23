@@ -12,8 +12,8 @@
     "preinstall": "npx only-allow pnpm",
     "artifacts": "napi artifacts",
     "build": "pnpm build:rust && pnpm build:ts",
-    "build:rust": "napi build --no-const-enum --platform --release --output-dir src-js/generated",
-    "build:rust:debug": "napi build --no-const-enum --platform --output-dir src-js/generated",
+    "build:rust": "napi build --no-const-enum --platform --release --esm --output-dir src-js/generated",
+    "build:rust:debug": "napi build --no-const-enum --platform --esm --output-dir src-js/generated",
     "build:ts": "tsgo",
     "prepublishOnly": "napi prepublish -t npm",
     "version": "napi version"
@@ -30,6 +30,7 @@
     "email": "mitarashidango0927@gmail.com"
   },
   "license": "MIT",
+  "type": "module",
   "packageManager": "pnpm@10.18.0",
   "dependencies": {
     "temporal-polyfill": "^0.3.0"
