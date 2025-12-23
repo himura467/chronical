@@ -5,6 +5,10 @@ export declare class RRule {
   get freq(): Frequency
 }
 
+export declare class RRuleSet {
+  constructor(dtStart: string)
+}
+
 export type Frequency =  'Yearly'|
 'Monthly'|
 'Weekly'|
