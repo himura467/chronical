@@ -11,8 +11,8 @@
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "artifacts": "napi artifacts",
-    "build": "napi build --no-const-enum --platform --release",
-    "build:debug": "napi build --no-const-enum --platform",
+    "build": "napi build --no-const-enum --platform --release --output-dir src-js/generated",
+    "build:debug": "napi build --no-const-enum --platform --output-dir src-js/generated",
     "prepublishOnly": "napi prepublish -t npm",
     "version": "napi version"
   },
