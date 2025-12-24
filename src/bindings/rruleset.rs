@@ -19,4 +19,9 @@ impl RRuleSet {
             rruleset: core::rruleset::RRuleSet::new(zoned_dt),
         })
     }
+
+    #[napi]
+    pub fn all(&self) -> Vec<String> {
+        self.rruleset.all()
+    }
 }

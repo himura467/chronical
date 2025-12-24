@@ -7,6 +7,7 @@ export declare class RRule {
 
 export declare class RRuleSet {
   constructor(dtStart: string)
+  all(): Array<string>
 }
 
 export type Frequency =  'Yearly'|
