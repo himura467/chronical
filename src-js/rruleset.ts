@@ -7,4 +7,8 @@ export class RRuleSet {
   constructor(dtStart: Temporal.ZonedDateTime) {
     this.native = new NativeRRuleSet(dtStart.toString());
   }
+
+  all(): Temporal.ZonedDateTime[] {
+    return this.native.all().map((date) => Temporal.ZonedDateTime.from(date));
+  }
 }

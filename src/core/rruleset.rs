@@ -19,4 +19,8 @@ impl RRuleSet {
             exdate: Vec::new(),
         }
     }
+
+    pub fn all(&self) -> Vec<String> {
+        vec![self.dt_start.to_rfc9557()]
+    }
 }
