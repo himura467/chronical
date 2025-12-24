@@ -1,6 +1,6 @@
 {
   "name": "chronical",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "An implementation of RRule as defined in iCalendar (RFC 5545) using Temporal API written in Rust",
   "repository": {
     "type": "git",
