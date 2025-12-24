@@ -13,11 +13,16 @@ npm install chronical
 ## Quick Start
 
 ```typescript
-import { RRule } from "chronical";
+import { RRuleSet } from "chronical";
+import { Temporal } from "temporal-polyfill";
 
-// Create a daily recurring event
-const rule = new RRule("Daily");
-console.log(rule.freq); // "Daily"
+const dtStart = Temporal.ZonedDateTime.from("2025-01-01T00:00:00[UTC]");
+const rruleSet = new RRuleSet(dtStart);
+
+// Get all occurrences
+const dates = rruleSet.all();
+console.log(dates); // [ ZonedDateTime [Temporal.ZonedDateTime] {} ]
+console.log(dates[0].toString()); // "2025-01-01T00:00:00+00:00[UTC]"
 ```
 
 ## License
