@@ -2,6 +2,7 @@ use super::weekday::Weekday;
 use crate::error::ParseError;
 use std::str::FromStr;
 
+#[derive(Copy, Clone)]
 pub enum WeekdayNum {
     Every(Weekday),
     Nth(i16, Weekday),
