@@ -9,3 +9,9 @@ pub enum ParseError {
     #[error("`{0}` is not a valid weekday.")]
     InvalidWeekday(String),
 }
+
+#[derive(Debug, Error)]
+pub enum RRuleError {
+    #[error("Invalid recurrence rule: `{0}`")]
+    ValidationError(String),
+}
