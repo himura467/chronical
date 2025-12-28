@@ -3,8 +3,7 @@ use super::frequency::Frequency;
 use super::weekday::Weekday;
 use super::weekday_num::WeekdayNum;
 use crate::error::RRuleError;
-use chrono::{DateTime, Month};
-use chrono_tz::Tz;
+use chrono::Month;
 
 pub struct RRule {
     pub freq: Frequency,
@@ -45,7 +44,7 @@ impl RRule {
 
     pub fn build(
         &self,
-        dt_start: DateTime<Tz>,
+        dt_start: &ZonedDateTime,
     ) -> Result<rrule::RRule<rrule::Validated>, RRuleError> {
         let mut builder = rrule::RRule::new(self.freq.into());
 
@@ -56,11 +55,7 @@ impl RRule {
             builder = builder.count(count);
         }
         if let Some(until) = &self.until {
-            builder = builder.until(
-                until
-                    .datetime
-                    .with_timezone(&rrule::Tz::Tz(until.datetime.timezone())),
-            );
+            builder = builder.until(until.to_rrule_datetime());
         }
         if let Some(wkst) = self.wkst {
             builder = builder.week_start(wkst.into());
@@ -84,7 +79,7 @@ impl RRule {
         builder = builder.by_second(self.by_second.clone());
 
         builder
-            .validate(dt_start.with_timezone(&rrule::Tz::Tz(dt_start.timezone())))
+            .validate(dt_start.to_rrule_datetime())
             .map_err(|e| RRuleError::ValidationError(e.to_string()))
     }
 }
