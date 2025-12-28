@@ -1,5 +1,6 @@
 use super::datetime::ZonedDateTime;
 use super::rrule::RRule;
+use crate::error::RRuleError;
 
 pub struct RRuleSet {
     dt_start: ZonedDateTime,
@@ -22,5 +23,24 @@ impl RRuleSet {
 
     pub fn all(&self) -> Vec<String> {
         vec![self.dt_start.to_rfc9557()]
+    }
+
+    pub fn build(&self) -> Result<rrule::RRuleSet, RRuleError> {
+        let mut builder = rrule::RRuleSet::new(self.dt_start.to_rrule_datetime());
+
+        for rr in &self.rrule {
+            builder = builder.rrule(rr.build(&self.dt_start)?);
+        }
+        for er in &self.exrule {
+            builder = builder.exrule(er.build(&self.dt_start)?);
+        }
+        for rd in &self.rdate {
+            builder = builder.rdate(rd.to_rrule_datetime());
+        }
+        for ed in &self.exdate {
+            builder = builder.exdate(ed.to_rrule_datetime());
+        }
+
+        Ok(builder)
     }
 }
