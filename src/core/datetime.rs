@@ -17,6 +17,11 @@ impl ZonedDateTime {
     pub fn to_rfc9557(&self) -> String {
         rfc9557::to_rfc9557(&self.datetime, &self.calendar)
     }
+
+    pub fn to_rrule_datetime(&self) -> DateTime<rrule::Tz> {
+        self.datetime
+            .with_timezone(&rrule::Tz::Tz(self.datetime.timezone()))
+    }
 }
 
 impl FromStr for ZonedDateTime {
