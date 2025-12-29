@@ -22,7 +22,8 @@ impl RRuleSet {
     }
 
     pub fn all(&self) -> Vec<String> {
-        vec![self.dt_start.to_rfc9557()]
+        // TODO: Implement proper iteration
+        vec![]
     }
 
     pub fn build(&self) -> Result<rrule::RRuleSet, RRuleError> {
