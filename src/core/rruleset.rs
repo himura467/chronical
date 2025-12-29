@@ -26,7 +26,7 @@ impl RRuleSet {
     }
 
     pub fn build(&self) -> Result<rrule::RRuleSet, RRuleError> {
-        let mut builder = rrule::RRuleSet::new(self.dt_start.to_rrule_datetime());
+        let mut builder = rrule::RRuleSet::new((&self.dt_start).into());
 
         for rr in &self.rrule {
             builder = builder.rrule(rr.build(&self.dt_start)?);
@@ -35,10 +35,10 @@ impl RRuleSet {
             builder = builder.exrule(er.build(&self.dt_start)?);
         }
         for rd in &self.rdate {
-            builder = builder.rdate(rd.to_rrule_datetime());
+            builder = builder.rdate(rd.into());
         }
         for ed in &self.exdate {
-            builder = builder.exdate(ed.to_rrule_datetime());
+            builder = builder.exdate(ed.into());
         }
 
         Ok(builder)
