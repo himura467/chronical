@@ -17,11 +17,6 @@ impl ZonedDateTime {
     pub fn to_rfc9557(&self) -> String {
         rfc9557::to_rfc9557(&self.datetime, &self.calendar)
     }
-
-    pub fn to_rrule_datetime(&self) -> DateTime<rrule::Tz> {
-        self.datetime
-            .with_timezone(&rrule::Tz::Tz(self.datetime.timezone()))
-    }
 }
 
 impl FromStr for ZonedDateTime {
@@ -30,5 +25,12 @@ impl FromStr for ZonedDateTime {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let (datetime, calendar) = rfc9557::from_rfc9557(s)?;
         Ok(ZonedDateTime { datetime, calendar })
+    }
+}
+
+impl From<ZonedDateTime> for DateTime<rrule::Tz> {
+    fn from(zdt: ZonedDateTime) -> Self {
+        zdt.datetime
+            .with_timezone(&rrule::Tz::Tz(zdt.datetime.timezone()))
     }
 }
