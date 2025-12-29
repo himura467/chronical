@@ -21,12 +21,20 @@ impl From<ZonedDateTime> for Rfc9557 {
     }
 }
 
+impl From<Rfc9557> for ZonedDateTime {
+    fn from(rfc: Rfc9557) -> Self {
+        Self {
+            datetime: rfc.datetime,
+            calendar: rfc.calendar,
+        }
+    }
+}
+
 impl FromStr for ZonedDateTime {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let (datetime, calendar) = rfc9557::from_rfc9557(s)?;
-        Ok(ZonedDateTime { datetime, calendar })
+        Rfc9557::from_str(s).map(ZonedDateTime::from)
     }
 }
 
