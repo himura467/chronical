@@ -1,4 +1,4 @@
-use super::rfc9557;
+use super::rfc9557::Rfc9557;
 use crate::error::ParseError;
 use chrono::DateTime;
 use chrono_tz::Tz;
@@ -13,9 +13,11 @@ impl ZonedDateTime {
     pub fn new(datetime: DateTime<Tz>, calendar: Option<String>) -> Self {
         Self { datetime, calendar }
     }
+}
 
-    pub fn to_rfc9557(&self) -> String {
-        rfc9557::to_rfc9557(&self.datetime, &self.calendar)
+impl From<ZonedDateTime> for Rfc9557 {
+    fn from(zdt: ZonedDateTime) -> Self {
+        Rfc9557::new(zdt.datetime, zdt.calendar)
     }
 }
 
