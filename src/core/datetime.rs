@@ -28,8 +28,8 @@ impl FromStr for ZonedDateTime {
     }
 }
 
-impl From<ZonedDateTime> for DateTime<rrule::Tz> {
-    fn from(zdt: ZonedDateTime) -> Self {
+impl From<&ZonedDateTime> for DateTime<rrule::Tz> {
+    fn from(zdt: &ZonedDateTime) -> Self {
         zdt.datetime
             .with_timezone(&rrule::Tz::Tz(zdt.datetime.timezone()))
     }
