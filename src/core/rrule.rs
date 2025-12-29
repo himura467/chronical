@@ -55,7 +55,7 @@ impl RRule {
             builder = builder.count(count);
         }
         if let Some(until) = &self.until {
-            builder = builder.until(until.to_rrule_datetime());
+            builder = builder.until(until.into());
         }
         if let Some(wkst) = self.wkst {
             builder = builder.week_start(wkst.into());
@@ -79,7 +79,7 @@ impl RRule {
         builder = builder.by_second(self.by_second.clone());
 
         builder
-            .validate(dt_start.to_rrule_datetime())
+            .validate(dt_start.into())
             .map_err(|e| RRuleError::ValidationError(e.to_string()))
     }
 }
