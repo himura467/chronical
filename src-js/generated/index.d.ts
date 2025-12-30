@@ -3,6 +3,19 @@
 export declare class RRule {
   constructor(freq: Frequency)
   get freq(): Frequency
+  get until(): string | null
+  get count(): number | null
+  get interval(): number | null
+  get bySecond(): Array<number>
+  get byMinute(): Array<number>
+  get byHour(): Array<number>
+  get byDay(): Array<string>
+  get byMonthDay(): Array<number>
+  get byYearDay(): Array<number>
+  get byWeekNo(): Array<number>
+  get byMonth(): Array<number>
+  get bySetPos(): Array<number>
+  get wkst(): string | null
 }
 
 export declare class RRuleSet {
