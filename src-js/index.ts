@@ -1,3 +1,3 @@
-export { RRule } from "./generated/index.js";
+export { RRule } from "./rrule.js";
 export type { Frequency } from "./generated/index.js";
 export { RRuleSet } from "./rruleset.js";
