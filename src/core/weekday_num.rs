@@ -1,5 +1,6 @@
 use super::weekday::Weekday;
 use crate::error::ParseError;
+use std::fmt;
 use std::str::FromStr;
 
 #[derive(Copy, Clone)]
@@ -13,6 +14,15 @@ impl WeekdayNum {
         match number {
             Some(n) => WeekdayNum::Nth(n, weekday),
             None => WeekdayNum::Every(weekday),
+        }
+    }
+}
+
+impl fmt::Display for WeekdayNum {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            WeekdayNum::Every(w) => write!(f, "{}", w),
+            WeekdayNum::Nth(n, w) => write!(f, "{}{}", n, w),
         }
     }
 }
@@ -48,19 +58,19 @@ impl FromStr for WeekdayNum {
 }
 
 impl From<WeekdayNum> for rrule::NWeekday {
-    fn from(wdn: WeekdayNum) -> Self {
-        match wdn {
-            WeekdayNum::Every(wd) => rrule::NWeekday::Every(wd.into()),
-            WeekdayNum::Nth(n, wd) => rrule::NWeekday::Nth(n, wd.into()),
+    fn from(wn: WeekdayNum) -> Self {
+        match wn {
+            WeekdayNum::Every(w) => rrule::NWeekday::Every(w.into()),
+            WeekdayNum::Nth(n, w) => rrule::NWeekday::Nth(n, w.into()),
         }
     }
 }
 
 impl From<rrule::NWeekday> for WeekdayNum {
-    fn from(nwd: rrule::NWeekday) -> Self {
-        match nwd {
-            rrule::NWeekday::Every(wd) => WeekdayNum::Every(wd.into()),
-            rrule::NWeekday::Nth(n, wd) => WeekdayNum::Nth(n, wd.into()),
+    fn from(nw: rrule::NWeekday) -> Self {
+        match nw {
+            rrule::NWeekday::Every(w) => WeekdayNum::Every(w.into()),
+            rrule::NWeekday::Nth(n, w) => WeekdayNum::Nth(n, w.into()),
         }
     }
 }
