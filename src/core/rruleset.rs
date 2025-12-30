@@ -4,6 +4,22 @@ use super::rrule::RRule;
 use super::rruleset_iter::RRuleSetIter;
 use crate::error::RRuleError;
 
+fn is_before(zdt: &ZonedDateTime, before: &ZonedDateTime, inclusive: bool) -> bool {
+    if inclusive {
+        zdt.datetime <= before.datetime
+    } else {
+        zdt.datetime < before.datetime
+    }
+}
+
+fn is_after(zdt: &ZonedDateTime, after: &ZonedDateTime, inclusive: bool) -> bool {
+    if inclusive {
+        zdt.datetime >= after.datetime
+    } else {
+        zdt.datetime > after.datetime
+    }
+}
+
 pub struct RRuleSet {
     dt_start: ZonedDateTime,
     rrule: Vec<RRule>,
