@@ -1,4 +1,5 @@
 use crate::error::ParseError;
+use std::fmt;
 use std::str::FromStr;
 
 #[derive(Copy, Clone)]
@@ -10,6 +11,21 @@ pub enum Weekday {
     Fri,
     Sat,
     Sun,
+}
+
+impl fmt::Display for Weekday {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let s = match self {
+            Weekday::Mon => "MO",
+            Weekday::Tue => "TU",
+            Weekday::Wed => "WE",
+            Weekday::Thu => "TH",
+            Weekday::Fri => "FR",
+            Weekday::Sat => "SA",
+            Weekday::Sun => "SU",
+        };
+        write!(f, "{}", s)
+    }
 }
 
 impl FromStr for Weekday {
@@ -30,8 +46,8 @@ impl FromStr for Weekday {
 }
 
 impl From<Weekday> for rrule::Weekday {
-    fn from(wd: Weekday) -> Self {
-        match wd {
+    fn from(w: Weekday) -> Self {
+        match w {
             Weekday::Mon => rrule::Weekday::Mon,
             Weekday::Tue => rrule::Weekday::Tue,
             Weekday::Wed => rrule::Weekday::Wed,
@@ -44,8 +60,8 @@ impl From<Weekday> for rrule::Weekday {
 }
 
 impl From<rrule::Weekday> for Weekday {
-    fn from(wd: rrule::Weekday) -> Self {
-        match wd {
+    fn from(w: rrule::Weekday) -> Self {
+        match w {
             rrule::Weekday::Mon => Weekday::Mon,
             rrule::Weekday::Tue => Weekday::Tue,
             rrule::Weekday::Wed => Weekday::Wed,
