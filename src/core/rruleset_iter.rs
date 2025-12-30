@@ -15,6 +15,6 @@ impl Iterator for RRuleSetIter {
     type Item = Result<ZonedDateTime, ParseError>;
 
     fn next(&mut self) -> Option<Self::Item> {
-        self.iter.next().map(|dt| ZonedDateTime::try_from(dt))
+        self.iter.next().map(ZonedDateTime::try_from)
     }
 }
