@@ -11,4 +11,14 @@ export class RRuleSet {
   all(): Temporal.ZonedDateTime[] {
     return this.native.all().map((date) => Temporal.ZonedDateTime.from(date));
   }
+
+  between(
+    after: Temporal.ZonedDateTime,
+    before: Temporal.ZonedDateTime,
+    inclusive?: boolean | undefined | null
+  ): Temporal.ZonedDateTime[] {
+    return this.native
+      .between(after.toString(), before.toString(), inclusive)
+      .map((date) => Temporal.ZonedDateTime.from(date));
+  }
 }
