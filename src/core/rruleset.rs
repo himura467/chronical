@@ -1,5 +1,7 @@
 use super::datetime::ZonedDateTime;
+use super::rfc9557::Rfc9557;
 use super::rrule::RRule;
+use super::rruleset_iter::RRuleSetIter;
 use crate::error::RRuleError;
 
 pub struct RRuleSet {
@@ -21,9 +23,22 @@ impl RRuleSet {
         }
     }
 
-    pub fn all(&self) -> Vec<String> {
-        // TODO: Implement proper iteration
-        vec![]
+    pub fn try_into_iter(&self) -> Result<RRuleSetIter, RRuleError> {
+        let rruleset = self.build()?;
+        Ok(RRuleSetIter::new(rruleset.into_iter()))
+    }
+
+    pub fn all(&self) -> Result<Vec<String>, RRuleError> {
+        self.try_into_iter()?
+            .map(|result| {
+                result
+                    .map(|zdt| {
+                        let rfc: Rfc9557 = zdt.into();
+                        rfc.to_string()
+                    })
+                    .map_err(|e| RRuleError::ValidationError(e.to_string()))
+            })
+            .collect()
     }
 
     pub fn build(&self) -> Result<rrule::RRuleSet, RRuleError> {
