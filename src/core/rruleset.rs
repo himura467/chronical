@@ -57,6 +57,36 @@ impl RRuleSet {
             .collect()
     }
 
+    pub fn between(
+        &self,
+        after: ZonedDateTime,
+        before: ZonedDateTime,
+        inclusive: Option<bool>,
+    ) -> Result<Vec<String>, RRuleError> {
+        let inclusive = inclusive.unwrap_or(false);
+
+        self.try_into_iter()?
+            .take_while(|result| {
+                // Continue iterating until we reach or pass the upper bound
+                match result {
+                    Ok(zdt) => is_before(zdt, &before, inclusive),
+                    Err(_) => true, // Continue on errors to collect them
+                }
+            })
+            .filter_map(|result| match result {
+                Ok(zdt) => {
+                    if is_after(&zdt, &after, inclusive) {
+                        let rfc: Rfc9557 = zdt.into();
+                        Some(Ok(rfc.to_string()))
+                    } else {
+                        None
+                    }
+                }
+                Err(e) => Some(Err(RRuleError::ValidationError(e.to_string()))),
+            })
+            .collect()
+    }
+
     pub fn build(&self) -> Result<rrule::RRuleSet, RRuleError> {
         let mut builder = rrule::RRuleSet::new((&self.dt_start).into());
 
