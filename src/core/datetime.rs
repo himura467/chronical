@@ -4,6 +4,7 @@ use chrono::DateTime;
 use chrono_tz::Tz;
 use std::str::FromStr;
 
+#[derive(Clone)]
 pub struct ZonedDateTime {
     pub datetime: DateTime<Tz>,
     pub calendar: Option<String>,
