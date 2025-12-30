@@ -21,7 +21,9 @@ impl RRuleSet {
     }
 
     #[napi]
-    pub fn all(&self) -> Vec<String> {
-        self.rruleset.all()
+    pub fn all(&self) -> Result<Vec<String>> {
+        self.rruleset
+            .all()
+            .map_err(|e| Error::from_reason(e.to_string()))
     }
 }
