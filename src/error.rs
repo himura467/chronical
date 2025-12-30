@@ -8,6 +8,8 @@ pub enum ParseError {
     InvalidFrequency(String),
     #[error("`{0}` is not a valid weekday.")]
     InvalidWeekday(String),
+    #[error("`{0}` is not a valid timezone.")]
+    InvalidTimezone(String),
 }
 
 #[derive(Debug, Error)]
