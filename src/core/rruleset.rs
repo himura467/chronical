@@ -4,6 +4,22 @@ use super::rrule::RRule;
 use super::rruleset_iter::RRuleSetIter;
 use crate::error::RRuleError;
 
+fn is_before(zdt: &ZonedDateTime, before: &ZonedDateTime, inclusive: bool) -> bool {
+    if inclusive {
+        zdt.datetime <= before.datetime
+    } else {
+        zdt.datetime < before.datetime
+    }
+}
+
+fn is_after(zdt: &ZonedDateTime, after: &ZonedDateTime, inclusive: bool) -> bool {
+    if inclusive {
+        zdt.datetime >= after.datetime
+    } else {
+        zdt.datetime > after.datetime
+    }
+}
+
 pub struct RRuleSet {
     dt_start: ZonedDateTime,
     rrule: Vec<RRule>,
@@ -37,6 +53,36 @@ impl RRuleSet {
                         rfc.to_string()
                     })
                     .map_err(|e| RRuleError::ValidationError(e.to_string()))
+            })
+            .collect()
+    }
+
+    pub fn between(
+        &self,
+        after: ZonedDateTime,
+        before: ZonedDateTime,
+        inclusive: Option<bool>,
+    ) -> Result<Vec<String>, RRuleError> {
+        let inclusive = inclusive.unwrap_or(false);
+
+        self.try_into_iter()?
+            .take_while(|result| {
+                // Continue iterating until we reach or pass the upper bound
+                match result {
+                    Ok(zdt) => is_before(zdt, &before, inclusive),
+                    Err(_) => true, // Continue on errors to collect them
+                }
+            })
+            .filter_map(|result| match result {
+                Ok(zdt) => {
+                    if is_after(&zdt, &after, inclusive) {
+                        let rfc: Rfc9557 = zdt.into();
+                        Some(Ok(rfc.to_string()))
+                    } else {
+                        None
+                    }
+                }
+                Err(e) => Some(Err(RRuleError::ValidationError(e.to_string()))),
             })
             .collect()
     }
