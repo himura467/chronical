@@ -44,3 +44,23 @@ impl From<&ZonedDateTime> for DateTime<rrule::Tz> {
             .with_timezone(&rrule::Tz::Tz(zdt.datetime.timezone()))
     }
 }
+
+impl TryFrom<DateTime<rrule::Tz>> for ZonedDateTime {
+    type Error = ParseError;
+
+    fn try_from(datetime: DateTime<rrule::Tz>) -> Result<Self, Self::Error> {
+        let chrono_tz = match datetime.timezone() {
+            rrule::Tz::Tz(tz) => tz,
+            rrule::Tz::Local(_) => {
+                return Err(ParseError::InvalidTimezone(
+                    "Local timezone is not supported in ZonedDateTime".to_string(),
+                ));
+            }
+        };
+        let chrono_datetime = datetime.with_timezone(&chrono_tz);
+        Ok(Self {
+            datetime: chrono_datetime,
+            calendar: None,
+        })
+    }
+}
