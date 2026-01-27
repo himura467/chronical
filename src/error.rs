@@ -1,6 +1,7 @@
 use thiserror::Error;
 
 #[derive(Debug, Error)]
+#[allow(clippy::enum_variant_names)]
 pub enum ParseError {
     #[error("`{0}` is not a valid property.")]
     InvalidProperty(String),
