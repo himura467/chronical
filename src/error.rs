@@ -2,6 +2,8 @@ use thiserror::Error;
 
 #[derive(Debug, Error)]
 pub enum ParseError {
+    #[error("`{0}` is not a valid property.")]
+    InvalidProperty(String),
     #[error("`{0}` is not a valid datetime.")]
     InvalidDateTime(String),
     #[error("`{0}` is not a valid frequency.")]
