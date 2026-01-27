@@ -15,11 +15,6 @@ impl Parameters {
     }
 
     /// Insert a parameter with the given key and value
-    ///
-    /// Per RFC 5545:
-    /// - Keys are case-insensitive (stored in uppercase)
-    /// - Quoted values (e.g., "John Smith") are case-sensitive (quotes removed, case preserved)
-    /// - Unquoted values are case-insensitive (stored in uppercase)
     pub fn insert(&mut self, key: String, value: String) {
         let normalized_key = key.to_uppercase();
 
@@ -27,7 +22,7 @@ impl Parameters {
         {
             value[1..value.len() - 1].to_string()
         } else {
-            value.to_uppercase()
+            value
         };
 
         self.parameters.insert(normalized_key, normalized_value);
