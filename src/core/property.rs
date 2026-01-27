@@ -57,19 +57,12 @@ impl FromStr for Property {
 
         let mut parameters = Parameters::new();
         for param in parts {
-            let mut kv = param.splitn(2, '=');
-            let k = kv.next().ok_or_else(|| {
-                ParseError::InvalidProperty(format!(
-                    "Invalid parameter format (missing key): {}",
-                    param
-                ))
-            })?;
-            let v = kv.next().ok_or_else(|| {
-                ParseError::InvalidProperty(format!(
-                    "Invalid parameter format (missing value): {}",
-                    param
-                ))
-            })?;
+            let (k, v) = param
+                .split_once('=')
+                .filter(|(k, v)| !k.is_empty() && !v.is_empty())
+                .ok_or_else(|| {
+                    ParseError::InvalidProperty(format!("Invalid parameter format: {}", param))
+                })?;
 
             parameters.insert(k.to_string(), v.to_string());
         }
