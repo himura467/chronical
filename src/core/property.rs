@@ -47,6 +47,7 @@ impl FromStr for Property {
         let mut parts = name_and_params.split(';');
         let name = parts
             .next()
+            .filter(|s| !s.is_empty())
             .ok_or_else(|| {
                 ParseError::InvalidProperty(format!(
                     "Invalid property format (missing name): {}",
