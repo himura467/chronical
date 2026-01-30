@@ -1,4 +1,4 @@
-use super::parameters::Parameters;
+use super::pairs::Pairs;
 use crate::error::ParseError;
 use std::str::FromStr;
 
@@ -15,13 +15,13 @@ pub struct Property {
     /// The property name (e.g., DTSTART, RRULE, RDATE, EXRULE, EXDATE)
     pub name: String,
     /// Property parameters as key-value pairs (e.g., TZID=America/New_York)
-    pub parameters: Parameters,
+    pub parameters: Pairs,
     /// The property value
     pub value: String,
 }
 
 impl Property {
-    pub fn new(name: String, parameters: Parameters, value: String) -> Self {
+    pub fn new(name: String, parameters: Pairs, value: String) -> Self {
         let name = name.to_uppercase();
 
         Self {
@@ -56,7 +56,7 @@ impl FromStr for Property {
             })?
             .to_uppercase();
 
-        let mut parameters = Parameters::new();
+        let mut parameters = Pairs::new();
         for param in parts {
             let (k, v) = param
                 .split_once('=')
