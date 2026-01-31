@@ -1,20 +1,18 @@
 use std::collections::HashMap;
 
-/// Property parameters
-///
-/// Property parameters contain meta-information about the property or the property value.
-pub struct Parameters {
-    parameters: HashMap<String, String>,
+/// Key-value pairs
+pub struct Pairs {
+    pairs: HashMap<String, String>,
 }
 
-impl Parameters {
+impl Pairs {
     pub fn new() -> Self {
         Self {
-            parameters: HashMap::new(),
+            pairs: HashMap::new(),
         }
     }
 
-    /// Insert a parameter with the given key and value
+    /// Insert a pair with the given key and value
     pub fn insert(&mut self, key: String, value: String) {
         let normalized_key = key.to_uppercase();
 
@@ -25,10 +23,10 @@ impl Parameters {
             value
         };
 
-        self.parameters.insert(normalized_key, normalized_value);
+        self.pairs.insert(normalized_key, normalized_value);
     }
 
     pub fn get(&self, key: &str) -> Option<&String> {
-        self.parameters.get(&key.to_uppercase())
+        self.pairs.get(&key.to_uppercase())
     }
 }

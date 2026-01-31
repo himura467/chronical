@@ -1,6 +1,12 @@
-use super::parameters::Parameters;
+use super::pairs::Pairs;
 use crate::error::ParseError;
 use std::str::FromStr;
+
+/// Property value
+pub enum Value {
+    Single(String),
+    Pairs(Pairs),
+}
 
 /// iCalendar property
 ///
@@ -15,13 +21,13 @@ pub struct Property {
     /// The property name (e.g., DTSTART, RRULE, RDATE, EXRULE, EXDATE)
     pub name: String,
     /// Property parameters as key-value pairs (e.g., TZID=America/New_York)
-    pub parameters: Parameters,
+    pub parameters: Pairs,
     /// The property value
-    pub value: String,
+    pub value: Value,
 }
 
 impl Property {
-    pub fn new(name: String, parameters: Parameters, value: String) -> Self {
+    pub fn new(name: String, parameters: Pairs, value: Value) -> Self {
         let name = name.to_uppercase();
 
         Self {
@@ -29,6 +35,28 @@ impl Property {
             parameters,
             value,
         }
+    }
+
+    fn parse_value(value: &str) -> Result<Value, ParseError> {
+        if !value.contains('=') {
+            if value.contains(';') {
+                return Err(ParseError::InvalidProperty(format!(
+                    "Invalid value format: {}",
+                    value
+                )));
+            }
+            return Ok(Value::Single(value.to_string()));
+        }
+
+        let parts: Vec<&str> = value.split(';').collect();
+        let mut pairs = Pairs::new();
+        for part in &parts {
+            let (k, v) = part.split_once('=').ok_or_else(|| {
+                ParseError::InvalidProperty(format!("Invalid value format: {}", value))
+            })?;
+            pairs.insert(k.to_string(), v.to_string());
+        }
+        Ok(Value::Pairs(pairs))
     }
 }
 
@@ -42,7 +70,7 @@ impl FromStr for Property {
         })?;
 
         let name_and_params = &s[..colon_pos];
-        let value = s[colon_pos + 1..].to_string();
+        let value = &s[colon_pos + 1..];
 
         let mut parts = name_and_params.split(';');
         let name = parts
@@ -56,7 +84,7 @@ impl FromStr for Property {
             })?
             .to_uppercase();
 
-        let mut parameters = Parameters::new();
+        let mut parameters = Pairs::new();
         for param in parts {
             let (k, v) = param
                 .split_once('=')
@@ -67,6 +95,8 @@ impl FromStr for Property {
 
             parameters.insert(k.to_string(), v.to_string());
         }
+
+        let value = Self::parse_value(value)?;
 
         Ok(Property {
             name,
