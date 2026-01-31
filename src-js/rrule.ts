@@ -8,6 +8,12 @@ export class RRule {
     this.native = new NativeRRule(freq);
   }
 
+  static fromString(s: string): RRule {
+    const instance = Object.create(RRule.prototype);
+    instance.native = NativeRRule.fromString(s);
+    return instance;
+  }
+
   get freq(): Frequency {
     return this.native.freq;
   }
