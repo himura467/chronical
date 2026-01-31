@@ -1,6 +1,8 @@
 use super::frequency::Frequency;
 use crate::core;
+use napi::bindgen_prelude::{Error, Result};
 use napi_derive::napi;
+use std::str::FromStr;
 
 #[napi]
 pub struct RRule {
@@ -14,6 +16,13 @@ impl RRule {
         RRule {
             rrule: core::rrule::RRule::new(freq.into()),
         }
+    }
+
+    #[napi(factory)]
+    pub fn from_string(s: String) -> Result<Self> {
+        let rrule =
+            core::rrule::RRule::from_str(&s).map_err(|e| Error::from_reason(e.to_string()))?;
+        Ok(RRule { rrule })
     }
 
     #[napi(getter)]
