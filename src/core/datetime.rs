@@ -18,7 +18,7 @@ impl ZonedDateTime {
 
 impl From<ZonedDateTime> for Rfc9557 {
     fn from(zdt: ZonedDateTime) -> Self {
-        Rfc9557::new(zdt.datetime, zdt.calendar)
+        Self::new(zdt.datetime, zdt.calendar)
     }
 }
 
@@ -35,7 +35,7 @@ impl FromStr for ZonedDateTime {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        Rfc9557::from_str(s).map(ZonedDateTime::from)
+        Rfc9557::from_str(s).map(Self::from)
     }
 }
 

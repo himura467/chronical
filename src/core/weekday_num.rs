@@ -12,8 +12,8 @@ pub enum WeekdayNum {
 impl WeekdayNum {
     pub fn new(number: Option<i16>, weekday: Weekday) -> Self {
         match number {
-            Some(n) => WeekdayNum::Nth(n, weekday),
-            None => WeekdayNum::Every(weekday),
+            Some(n) => Self::Nth(n, weekday),
+            None => Self::Every(weekday),
         }
     }
 }
@@ -21,8 +21,8 @@ impl WeekdayNum {
 impl fmt::Display for WeekdayNum {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            WeekdayNum::Every(w) => write!(f, "{}", w),
-            WeekdayNum::Nth(n, w) => write!(f, "{}{}", n, w),
+            Self::Every(w) => write!(f, "{}", w),
+            Self::Nth(n, w) => write!(f, "{}{}", n, w),
         }
     }
 }
@@ -53,15 +53,15 @@ impl FromStr for WeekdayNum {
             None
         };
 
-        Ok(WeekdayNum::new(n, weekday))
+        Ok(Self::new(n, weekday))
     }
 }
 
 impl From<WeekdayNum> for rrule::NWeekday {
     fn from(wn: WeekdayNum) -> Self {
         match wn {
-            WeekdayNum::Every(w) => rrule::NWeekday::Every(w.into()),
-            WeekdayNum::Nth(n, w) => rrule::NWeekday::Nth(n, w.into()),
+            WeekdayNum::Every(w) => Self::Every(w.into()),
+            WeekdayNum::Nth(n, w) => Self::Nth(n, w.into()),
         }
     }
 }
@@ -69,8 +69,8 @@ impl From<WeekdayNum> for rrule::NWeekday {
 impl From<rrule::NWeekday> for WeekdayNum {
     fn from(nw: rrule::NWeekday) -> Self {
         match nw {
-            rrule::NWeekday::Every(w) => WeekdayNum::Every(w.into()),
-            rrule::NWeekday::Nth(n, w) => WeekdayNum::Nth(n, w.into()),
+            rrule::NWeekday::Every(w) => Self::Every(w.into()),
+            rrule::NWeekday::Nth(n, w) => Self::Nth(n, w.into()),
         }
     }
 }

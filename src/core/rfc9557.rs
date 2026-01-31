@@ -66,7 +66,7 @@ impl FromStr for Rfc9557 {
 
         let zoned_dt = datetime.with_timezone(&timezone);
 
-        Ok(Rfc9557 {
+        Ok(Self {
             datetime: zoned_dt,
             calendar,
         })

@@ -32,13 +32,13 @@ impl FromStr for Frequency {
 impl From<Frequency> for rrule::Frequency {
     fn from(freq: Frequency) -> Self {
         match freq {
-            Frequency::Yearly => rrule::Frequency::Yearly,
-            Frequency::Monthly => rrule::Frequency::Monthly,
-            Frequency::Weekly => rrule::Frequency::Weekly,
-            Frequency::Daily => rrule::Frequency::Daily,
-            Frequency::Hourly => rrule::Frequency::Hourly,
-            Frequency::Minutely => rrule::Frequency::Minutely,
-            Frequency::Secondly => rrule::Frequency::Secondly,
+            Frequency::Yearly => Self::Yearly,
+            Frequency::Monthly => Self::Monthly,
+            Frequency::Weekly => Self::Weekly,
+            Frequency::Daily => Self::Daily,
+            Frequency::Hourly => Self::Hourly,
+            Frequency::Minutely => Self::Minutely,
+            Frequency::Secondly => Self::Secondly,
         }
     }
 }
@@ -46,13 +46,13 @@ impl From<Frequency> for rrule::Frequency {
 impl From<rrule::Frequency> for Frequency {
     fn from(freq: rrule::Frequency) -> Self {
         match freq {
-            rrule::Frequency::Yearly => Frequency::Yearly,
-            rrule::Frequency::Monthly => Frequency::Monthly,
-            rrule::Frequency::Weekly => Frequency::Weekly,
-            rrule::Frequency::Daily => Frequency::Daily,
-            rrule::Frequency::Hourly => Frequency::Hourly,
-            rrule::Frequency::Minutely => Frequency::Minutely,
-            rrule::Frequency::Secondly => Frequency::Secondly,
+            rrule::Frequency::Yearly => Self::Yearly,
+            rrule::Frequency::Monthly => Self::Monthly,
+            rrule::Frequency::Weekly => Self::Weekly,
+            rrule::Frequency::Daily => Self::Daily,
+            rrule::Frequency::Hourly => Self::Hourly,
+            rrule::Frequency::Minutely => Self::Minutely,
+            rrule::Frequency::Secondly => Self::Secondly,
         }
     }
 }

@@ -15,7 +15,7 @@ impl RRuleSet {
         let zdt = core::datetime::ZonedDateTime::from_str(&dt_start)
             .map_err(|e| Error::from_reason(e.to_string()))?;
 
-        Ok(RRuleSet {
+        Ok(Self {
             rruleset: core::rruleset::RRuleSet::new(zdt),
         })
     }

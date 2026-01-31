@@ -13,7 +13,7 @@ pub struct RRule {
 impl RRule {
     #[napi(constructor)]
     pub fn new(freq: Frequency) -> Self {
-        RRule {
+        Self {
             rrule: core::rrule::RRule::new(freq.into()),
         }
     }
@@ -22,7 +22,7 @@ impl RRule {
     pub fn from_string(s: String) -> Result<Self> {
         let rrule =
             core::rrule::RRule::from_str(&s).map_err(|e| Error::from_reason(e.to_string()))?;
-        Ok(RRule { rrule })
+        Ok(Self { rrule })
     }
 
     #[napi(getter)]
