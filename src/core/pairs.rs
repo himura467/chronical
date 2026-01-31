@@ -29,4 +29,20 @@ impl Pairs {
     pub fn get(&self, key: &str) -> Option<&String> {
         self.pairs.get(&key.to_uppercase())
     }
+
+    pub fn get_parsed<T, E>(&self, key: &str) -> Result<Option<T>, E>
+    where
+        T: std::str::FromStr<Err = E>,
+    {
+        self.get(key).map(|v| v.parse()).transpose()
+    }
+
+    pub fn get_csv<T, E>(&self, key: &str) -> Result<Option<Vec<T>>, E>
+    where
+        T: std::str::FromStr<Err = E>,
+    {
+        self.get(key)
+            .map(|v| v.split(',').map(|s| s.parse()).collect())
+            .transpose()
+    }
 }
