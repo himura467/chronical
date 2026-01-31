@@ -2,6 +2,7 @@
 /* eslint-disable */
 export declare class RRule {
   constructor(freq: Frequency)
+  static fromString(s: string): RRule
   get freq(): Frequency
   get until(): string | null
   get count(): number | null
