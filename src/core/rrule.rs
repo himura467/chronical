@@ -5,6 +5,7 @@ use super::weekday::Weekday;
 use super::weekday_num::WeekdayNum;
 use crate::error::{ParseError, RRuleError};
 use chrono::Month;
+use std::str::FromStr;
 
 pub struct RRule {
     pub freq: Frequency,
@@ -167,5 +168,14 @@ impl TryFrom<Property> for RRule {
             by_set_pos,
             wkst,
         })
+    }
+}
+
+impl FromStr for RRule {
+    type Err = ParseError;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        let property: Property = s.parse()?;
+        Self::try_from(property)
     }
 }
