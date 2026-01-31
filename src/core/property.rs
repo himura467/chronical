@@ -98,7 +98,7 @@ impl FromStr for Property {
 
         let value = Self::parse_value(value)?;
 
-        Ok(Property {
+        Ok(Self {
             name,
             parameters,
             value,

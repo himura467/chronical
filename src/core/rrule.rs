@@ -152,7 +152,7 @@ impl TryFrom<Property> for RRule {
             .unwrap_or_default();
         let wkst = pairs.get_parsed("WKST")?;
 
-        Ok(RRule {
+        Ok(Self {
             freq,
             until,
             count,

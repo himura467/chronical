@@ -16,13 +16,13 @@ pub enum Weekday {
 impl fmt::Display for Weekday {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let s = match self {
-            Weekday::Mon => "MO",
-            Weekday::Tue => "TU",
-            Weekday::Wed => "WE",
-            Weekday::Thu => "TH",
-            Weekday::Fri => "FR",
-            Weekday::Sat => "SA",
-            Weekday::Sun => "SU",
+            Self::Mon => "MO",
+            Self::Tue => "TU",
+            Self::Wed => "WE",
+            Self::Thu => "TH",
+            Self::Fri => "FR",
+            Self::Sat => "SA",
+            Self::Sun => "SU",
         };
         write!(f, "{}", s)
     }
@@ -33,13 +33,13 @@ impl FromStr for Weekday {
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s.to_uppercase().as_str() {
-            "MO" => Ok(Weekday::Mon),
-            "TU" => Ok(Weekday::Tue),
-            "WE" => Ok(Weekday::Wed),
-            "TH" => Ok(Weekday::Thu),
-            "FR" => Ok(Weekday::Fri),
-            "SA" => Ok(Weekday::Sat),
-            "SU" => Ok(Weekday::Sun),
+            "MO" => Ok(Self::Mon),
+            "TU" => Ok(Self::Tue),
+            "WE" => Ok(Self::Wed),
+            "TH" => Ok(Self::Thu),
+            "FR" => Ok(Self::Fri),
+            "SA" => Ok(Self::Sat),
+            "SU" => Ok(Self::Sun),
             _ => Err(ParseError::InvalidWeekday(s.to_string())),
         }
     }
@@ -48,13 +48,13 @@ impl FromStr for Weekday {
 impl From<Weekday> for rrule::Weekday {
     fn from(w: Weekday) -> Self {
         match w {
-            Weekday::Mon => rrule::Weekday::Mon,
-            Weekday::Tue => rrule::Weekday::Tue,
-            Weekday::Wed => rrule::Weekday::Wed,
-            Weekday::Thu => rrule::Weekday::Thu,
-            Weekday::Fri => rrule::Weekday::Fri,
-            Weekday::Sat => rrule::Weekday::Sat,
-            Weekday::Sun => rrule::Weekday::Sun,
+            Weekday::Mon => Self::Mon,
+            Weekday::Tue => Self::Tue,
+            Weekday::Wed => Self::Wed,
+            Weekday::Thu => Self::Thu,
+            Weekday::Fri => Self::Fri,
+            Weekday::Sat => Self::Sat,
+            Weekday::Sun => Self::Sun,
         }
     }
 }
@@ -62,13 +62,13 @@ impl From<Weekday> for rrule::Weekday {
 impl From<rrule::Weekday> for Weekday {
     fn from(w: rrule::Weekday) -> Self {
         match w {
-            rrule::Weekday::Mon => Weekday::Mon,
-            rrule::Weekday::Tue => Weekday::Tue,
-            rrule::Weekday::Wed => Weekday::Wed,
-            rrule::Weekday::Thu => Weekday::Thu,
-            rrule::Weekday::Fri => Weekday::Fri,
-            rrule::Weekday::Sat => Weekday::Sat,
-            rrule::Weekday::Sun => Weekday::Sun,
+            rrule::Weekday::Mon => Self::Mon,
+            rrule::Weekday::Tue => Self::Tue,
+            rrule::Weekday::Wed => Self::Wed,
+            rrule::Weekday::Thu => Self::Thu,
+            rrule::Weekday::Fri => Self::Fri,
+            rrule::Weekday::Sat => Self::Sat,
+            rrule::Weekday::Sun => Self::Sun,
         }
     }
 }
