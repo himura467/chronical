@@ -1,6 +1,7 @@
 pub mod datetime;
 pub mod frequency;
 pub mod pairs;
+pub mod properties;
 pub mod property;
 pub mod rfc9557;
 pub mod rrule;
