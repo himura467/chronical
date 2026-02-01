@@ -1,8 +1,8 @@
-use super::datetime::ZonedDateTime;
 use super::frequency::Frequency;
 use super::property::{Property, Value};
 use super::weekday::Weekday;
 use super::weekday_num::WeekdayNum;
+use super::zoned_datetime::ZonedDateTime;
 use crate::error::{ParseError, RRuleError};
 use chrono::Month;
 use std::str::FromStr;

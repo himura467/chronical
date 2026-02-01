@@ -1,4 +1,3 @@
-pub mod datetime;
 pub mod frequency;
 pub mod pairs;
 pub mod properties;
@@ -9,3 +8,4 @@ pub mod rruleset;
 pub mod rruleset_iter;
 pub mod weekday;
 pub mod weekday_num;
+pub mod zoned_datetime;
