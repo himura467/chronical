@@ -86,7 +86,7 @@ impl DateTime {
             Self::Utc(naive) => {
                 if tzid.is_some() {
                     return Err(ParseError::InvalidDateTime(format!(
-                        "UTC date-time cannot have a TZID: {}Z",
+                        "UTC DATE-TIME cannot have a TZID: {}Z",
                         naive.format("%Y%m%dT%H%M%S")
                     )));
                 }
