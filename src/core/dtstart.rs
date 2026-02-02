@@ -1,4 +1,4 @@
-use super::datetime::DateTime;
+use super::datetime::ICalDateTime;
 use super::property::{Property, Value};
 use super::zoned_datetime::ZonedDateTime;
 use crate::error::ParseError;
@@ -24,7 +24,7 @@ impl TryFrom<Property> for DtStart {
         let tzid = property.parameters.get("TZID").map(|s| s.as_str());
         let dtstart = match &property.value {
             Value::Single(s) => {
-                let dt: DateTime = s.parse()?;
+                let dt: ICalDateTime = s.parse()?;
                 dt.to_zoned_datetime(tzid)?
             }
             Value::Pairs(_) => {

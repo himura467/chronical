@@ -1,4 +1,4 @@
-use super::datetime::DateTime;
+use super::datetime::ICalDateTime;
 use super::property::{Property, Value};
 use crate::error::ParseError;
 
@@ -9,8 +9,9 @@ use crate::error::ParseError;
 ///
 /// EXDATE defines the list of DATE-TIME exceptions for recurring events,
 /// to-dos, journal entries, or time zone definitions
+#[derive(Clone)]
 pub struct RDate {
-    pub values: Vec<DateTime>,
+    pub values: Vec<ICalDateTime>,
     pub tzid: Option<String>,
     pub value_type: Option<String>,
 }
@@ -31,8 +32,8 @@ impl TryFrom<Property> for RDate {
         let values = match &property.value {
             Value::Single(s) => s
                 .split(',')
-                .map(|v| v.parse::<DateTime>())
-                .collect::<Result<Vec<DateTime>, ParseError>>()?,
+                .map(|v| v.parse::<ICalDateTime>())
+                .collect::<Result<Vec<ICalDateTime>, ParseError>>()?,
             Value::Pairs(_) => {
                 return Err(ParseError::InvalidProperty(format!(
                     "{} value must be a list of DATE-TIME values",
