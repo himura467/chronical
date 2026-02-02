@@ -1,3 +1,5 @@
+use super::dtstart::DtStart;
+use super::rdate::RDate;
 use super::rfc9557::Rfc9557;
 use super::rrule::RRule;
 use super::rruleset_iter::RRuleSetIter;
@@ -23,15 +25,15 @@ fn is_after(zdt: &ZonedDateTime, after: &ZonedDateTime, inclusive: bool) -> bool
 
 #[derive(Clone)]
 pub struct RRuleSet {
-    dtstart: ZonedDateTime,
+    dtstart: DtStart,
     rrule: Vec<RRule>,
-    rdate: Vec<ZonedDateTime>,
+    rdate: Vec<RDate>,
     exrule: Vec<RRule>,
-    exdate: Vec<ZonedDateTime>,
+    exdate: Vec<RDate>,
 }
 
 impl RRuleSet {
-    pub fn new(dtstart: ZonedDateTime) -> Self {
+    pub fn new(dtstart: DtStart) -> Self {
         Self {
             dtstart,
             rrule: Vec::new(),
@@ -90,7 +92,7 @@ impl RRuleSet {
     }
 
     pub fn build(self) -> Result<rrule::RRuleSet, RRuleError> {
-        let dtstart: DateTime<rrule::Tz> = self.dtstart.into();
+        let dtstart: DateTime<rrule::Tz> = self.dtstart.dtstart.into();
         let mut builder = rrule::RRuleSet::new(dtstart);
 
         for rr in self.rrule {
@@ -100,10 +102,22 @@ impl RRuleSet {
             builder = builder.exrule(er.build(dtstart)?);
         }
         for rd in self.rdate {
-            builder = builder.rdate(rd.into());
+            let tzid = rd.tzid.as_deref();
+            for value in rd.values {
+                let zdt = value
+                    .to_zoned_datetime(tzid)
+                    .map_err(|e| RRuleError::ValidationError(e.to_string()))?;
+                builder = builder.rdate(zdt.into());
+            }
         }
         for ed in self.exdate {
-            builder = builder.exdate(ed.into());
+            let tzid = ed.tzid.as_deref();
+            for value in ed.values {
+                let zdt = value
+                    .to_zoned_datetime(tzid)
+                    .map_err(|e| RRuleError::ValidationError(e.to_string()))?;
+                builder = builder.exdate(zdt.into());
+            }
         }
 
         Ok(builder)

@@ -14,9 +14,10 @@ impl RRuleSet {
     pub fn new(dtstart: String) -> Result<Self> {
         let zdt = core::zoned_datetime::ZonedDateTime::from_str(&dtstart)
             .map_err(|e| Error::from_reason(e.to_string()))?;
+        let dtstart = core::dtstart::DtStart::new(zdt);
 
         Ok(Self {
-            rruleset: core::rruleset::RRuleSet::new(zdt),
+            rruleset: core::rruleset::RRuleSet::new(dtstart),
         })
     }
 

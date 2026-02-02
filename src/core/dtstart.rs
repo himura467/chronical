@@ -6,8 +6,15 @@ use crate::error::ParseError;
 /// Represents the DTSTART property from iCalendar
 ///
 /// The DTSTART property specifies when the recurrence rule pattern begins
+#[derive(Clone)]
 pub struct DtStart {
     pub dtstart: ZonedDateTime,
+}
+
+impl DtStart {
+    pub fn new(dtstart: ZonedDateTime) -> Self {
+        Self { dtstart }
+    }
 }
 
 impl TryFrom<Property> for DtStart {
