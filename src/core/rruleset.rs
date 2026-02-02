@@ -3,6 +3,7 @@ use super::rrule::RRule;
 use super::rruleset_iter::RRuleSetIter;
 use super::zoned_datetime::ZonedDateTime;
 use crate::error::RRuleError;
+use chrono::DateTime;
 
 fn is_before(zdt: &ZonedDateTime, before: &ZonedDateTime, inclusive: bool) -> bool {
     if inclusive {
@@ -20,6 +21,7 @@ fn is_after(zdt: &ZonedDateTime, after: &ZonedDateTime, inclusive: bool) -> bool
     }
 }
 
+#[derive(Clone)]
 pub struct RRuleSet {
     dt_start: ZonedDateTime,
     rrule: Vec<RRule>,
@@ -40,7 +42,7 @@ impl RRuleSet {
     }
 
     pub fn try_into_iter(&self) -> Result<RRuleSetIter, RRuleError> {
-        let rruleset = self.build()?;
+        let rruleset = self.clone().build()?;
         Ok(RRuleSetIter::new(rruleset.into_iter()))
     }
 
@@ -87,19 +89,20 @@ impl RRuleSet {
             .collect()
     }
 
-    pub fn build(&self) -> Result<rrule::RRuleSet, RRuleError> {
-        let mut builder = rrule::RRuleSet::new((&self.dt_start).into());
+    pub fn build(self) -> Result<rrule::RRuleSet, RRuleError> {
+        let dt_start: DateTime<rrule::Tz> = self.dt_start.into();
+        let mut builder = rrule::RRuleSet::new(dt_start);
 
-        for rr in &self.rrule {
-            builder = builder.rrule(rr.build(&self.dt_start)?);
+        for rr in self.rrule {
+            builder = builder.rrule(rr.build(dt_start)?);
         }
-        for er in &self.exrule {
-            builder = builder.exrule(er.build(&self.dt_start)?);
+        for er in self.exrule {
+            builder = builder.exrule(er.build(dt_start)?);
         }
-        for rd in &self.rdate {
+        for rd in self.rdate {
             builder = builder.rdate(rd.into());
         }
-        for ed in &self.exdate {
+        for ed in self.exdate {
             builder = builder.exdate(ed.into());
         }
 

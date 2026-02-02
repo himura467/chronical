@@ -4,9 +4,10 @@ use super::weekday::Weekday;
 use super::weekday_num::WeekdayNum;
 use super::zoned_datetime::ZonedDateTime;
 use crate::error::{ParseError, RRuleError};
-use chrono::Month;
+use chrono::{DateTime, Month};
 use std::str::FromStr;
 
+#[derive(Clone)]
 pub struct RRule {
     pub freq: Frequency,
     pub until: Option<ZonedDateTime>,
@@ -45,8 +46,8 @@ impl RRule {
     }
 
     pub fn build(
-        &self,
-        dt_start: &ZonedDateTime,
+        self,
+        dt_start: DateTime<rrule::Tz>,
     ) -> Result<rrule::RRule<rrule::Validated>, RRuleError> {
         let mut builder = rrule::RRule::new(self.freq.into());
 
@@ -56,7 +57,7 @@ impl RRule {
         if let Some(count) = self.count {
             builder = builder.count(count);
         }
-        if let Some(until) = &self.until {
+        if let Some(until) = self.until {
             builder = builder.until(until.into());
         }
         if let Some(wkst) = self.wkst {
@@ -81,7 +82,7 @@ impl RRule {
         builder = builder.by_second(self.by_second.clone());
 
         builder
-            .validate(dt_start.into())
+            .validate(dt_start)
             .map_err(|e| RRuleError::ValidationError(e.to_string()))
     }
 }
