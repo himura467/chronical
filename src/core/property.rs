@@ -18,7 +18,7 @@ pub enum Value {
 /// RDATE;VALUE=DATE:19970304,19970504,19970704,19970904
 /// ```
 pub struct Property {
-    /// The property name (e.g., DTSTART, RRULE, RDATE, EXRULE, EXDATE)
+    /// The property name (e.g., DTSTART, RRULE, EXRULE, RDATE, EXDATE)
     pub name: String,
     /// Property parameters as key-value pairs (e.g., TZID=America/New_York)
     pub parameters: Pairs,

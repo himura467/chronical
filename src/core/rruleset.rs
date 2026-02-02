@@ -29,8 +29,8 @@ fn is_after(zdt: &ZonedDateTime, after: &ZonedDateTime, inclusive: bool) -> bool
 pub struct RRuleSet {
     dtstart: DtStart,
     rrule: Vec<RRule>,
-    rdate: Vec<RDate>,
     exrule: Vec<RRule>,
+    rdate: Vec<RDate>,
     exdate: Vec<RDate>,
 }
 
@@ -39,8 +39,8 @@ impl RRuleSet {
         Self {
             dtstart,
             rrule: Vec::new(),
-            rdate: Vec::new(),
             exrule: Vec::new(),
+            rdate: Vec::new(),
             exdate: Vec::new(),
         }
     }
@@ -134,8 +134,8 @@ impl FromStr for RRuleSet {
 
         let mut dtstart = None;
         let mut rrule = Vec::new();
-        let mut rdate = Vec::new();
         let mut exrule = Vec::new();
+        let mut rdate = Vec::new();
         let mut exdate = Vec::new();
 
         for property in properties.properties {
@@ -146,11 +146,11 @@ impl FromStr for RRuleSet {
                 "RRULE" => {
                     rrule.push(RRule::try_from(property)?);
                 }
-                "RDATE" => {
-                    rdate.push(RDate::try_from(property)?);
-                }
                 "EXRULE" => {
                     exrule.push(RRule::try_from(property)?);
+                }
+                "RDATE" => {
+                    rdate.push(RDate::try_from(property)?);
                 }
                 "EXDATE" => {
                     exdate.push(RDate::try_from(property)?);
@@ -169,8 +169,8 @@ impl FromStr for RRuleSet {
         Ok(Self {
             dtstart,
             rrule,
-            rdate,
             exrule,
+            rdate,
             exdate,
         })
     }
