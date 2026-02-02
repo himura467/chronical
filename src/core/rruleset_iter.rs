@@ -1,4 +1,4 @@
-use super::datetime::ZonedDateTime;
+use super::zoned_datetime::ZonedDateTime;
 use crate::error::ParseError;
 
 pub struct RRuleSetIter {

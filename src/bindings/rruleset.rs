@@ -12,7 +12,7 @@ pub struct RRuleSet {
 impl RRuleSet {
     #[napi(constructor)]
     pub fn new(dt_start: String) -> Result<Self> {
-        let zdt = core::datetime::ZonedDateTime::from_str(&dt_start)
+        let zdt = core::zoned_datetime::ZonedDateTime::from_str(&dt_start)
             .map_err(|e| Error::from_reason(e.to_string()))?;
 
         Ok(Self {
@@ -34,9 +34,9 @@ impl RRuleSet {
         before: String,
         inclusive: Option<bool>,
     ) -> Result<Vec<String>> {
-        let after_zdt = core::datetime::ZonedDateTime::from_str(&after)
+        let after_zdt = core::zoned_datetime::ZonedDateTime::from_str(&after)
             .map_err(|e| Error::from_reason(e.to_string()))?;
-        let before_zdt = core::datetime::ZonedDateTime::from_str(&before)
+        let before_zdt = core::zoned_datetime::ZonedDateTime::from_str(&before)
             .map_err(|e| Error::from_reason(e.to_string()))?;
 
         self.rruleset
