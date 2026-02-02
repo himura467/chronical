@@ -47,7 +47,7 @@ impl RRule {
 
     pub fn build(
         self,
-        dt_start: DateTime<rrule::Tz>,
+        dtstart: DateTime<rrule::Tz>,
     ) -> Result<rrule::RRule<rrule::Validated>, RRuleError> {
         let mut builder = rrule::RRule::new(self.freq.into());
 
@@ -82,7 +82,7 @@ impl RRule {
         builder = builder.by_second(self.by_second.clone());
 
         builder
-            .validate(dt_start)
+            .validate(dtstart)
             .map_err(|e| RRuleError::ValidationError(e.to_string()))
     }
 }

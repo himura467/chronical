@@ -10,7 +10,8 @@ use std::str::FromStr;
 /// - `Date` — `YYYYMMDD`
 /// - `Local` — `YYYYMMDDTHHmmss` (requires TZID for timezone resolution)
 /// - `Utc` — `YYYYMMDDTHHmmssZ`
-pub enum DateTime {
+#[derive(Clone)]
+pub enum ICalDateTime {
     /// DATE value (YYYYMMDD)
     Date(NaiveDate),
     /// Local DATE-TIME value (YYYYMMDDTHHmmss)
@@ -34,7 +35,7 @@ fn parse_datetime(s: &str) -> Result<NaiveDateTime, ParseError> {
         .map_err(|_| ParseError::InvalidDateTime(s.to_string()))
 }
 
-impl FromStr for DateTime {
+impl FromStr for ICalDateTime {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
@@ -50,7 +51,7 @@ impl FromStr for DateTime {
     }
 }
 
-impl DateTime {
+impl ICalDateTime {
     /// Resolves to a [`ZonedDateTime`] using the given IANA timezone ID
     ///
     /// - `Date` values are interpreted as midnight; uses `tzid` if provided, otherwise UTC.
@@ -86,7 +87,7 @@ impl DateTime {
             Self::Utc(naive) => {
                 if tzid.is_some() {
                     return Err(ParseError::InvalidDateTime(format!(
-                        "UTC date-time cannot have a TZID: {}Z",
+                        "UTC DATE-TIME cannot have a TZID: {}Z",
                         naive.format("%Y%m%dT%H%M%S")
                     )));
                 }
