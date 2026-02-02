@@ -10,6 +10,7 @@ use std::str::FromStr;
 /// - `Date` — `YYYYMMDD`
 /// - `Local` — `YYYYMMDDTHHmmss` (requires TZID for timezone resolution)
 /// - `Utc` — `YYYYMMDDTHHmmssZ`
+#[derive(Clone)]
 pub enum ICalDateTime {
     /// DATE value (YYYYMMDD)
     Date(NaiveDate),
