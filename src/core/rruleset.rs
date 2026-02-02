@@ -23,7 +23,7 @@ fn is_after(zdt: &ZonedDateTime, after: &ZonedDateTime, inclusive: bool) -> bool
 
 #[derive(Clone)]
 pub struct RRuleSet {
-    dt_start: ZonedDateTime,
+    dtstart: ZonedDateTime,
     rrule: Vec<RRule>,
     rdate: Vec<ZonedDateTime>,
     exrule: Vec<RRule>,
@@ -31,9 +31,9 @@ pub struct RRuleSet {
 }
 
 impl RRuleSet {
-    pub fn new(dt_start: ZonedDateTime) -> Self {
+    pub fn new(dtstart: ZonedDateTime) -> Self {
         Self {
-            dt_start,
+            dtstart,
             rrule: Vec::new(),
             rdate: Vec::new(),
             exrule: Vec::new(),
@@ -90,14 +90,14 @@ impl RRuleSet {
     }
 
     pub fn build(self) -> Result<rrule::RRuleSet, RRuleError> {
-        let dt_start: DateTime<rrule::Tz> = self.dt_start.into();
-        let mut builder = rrule::RRuleSet::new(dt_start);
+        let dtstart: DateTime<rrule::Tz> = self.dtstart.into();
+        let mut builder = rrule::RRuleSet::new(dtstart);
 
         for rr in self.rrule {
-            builder = builder.rrule(rr.build(dt_start)?);
+            builder = builder.rrule(rr.build(dtstart)?);
         }
         for er in self.exrule {
-            builder = builder.exrule(er.build(dt_start)?);
+            builder = builder.exrule(er.build(dtstart)?);
         }
         for rd in self.rdate {
             builder = builder.rdate(rd.into());

@@ -11,8 +11,8 @@ pub struct RRuleSet {
 #[napi]
 impl RRuleSet {
     #[napi(constructor)]
-    pub fn new(dt_start: String) -> Result<Self> {
-        let zdt = core::zoned_datetime::ZonedDateTime::from_str(&dt_start)
+    pub fn new(dtstart: String) -> Result<Self> {
+        let zdt = core::zoned_datetime::ZonedDateTime::from_str(&dtstart)
             .map_err(|e| Error::from_reason(e.to_string()))?;
 
         Ok(Self {
