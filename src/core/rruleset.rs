@@ -1,11 +1,13 @@
 use super::dtstart::DtStart;
+use super::properties::Properties;
 use super::rdate::RDate;
 use super::rfc9557::Rfc9557;
 use super::rrule::RRule;
 use super::rruleset_iter::RRuleSetIter;
 use super::zoned_datetime::ZonedDateTime;
-use crate::error::RRuleError;
+use crate::error::{ParseError, RRuleError};
 use chrono::DateTime;
+use std::str::FromStr;
 
 fn is_before(zdt: &ZonedDateTime, before: &ZonedDateTime, inclusive: bool) -> bool {
     if inclusive {
@@ -121,5 +123,55 @@ impl RRuleSet {
         }
 
         Ok(builder)
+    }
+}
+
+impl FromStr for RRuleSet {
+    type Err = ParseError;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        let properties: Properties = s.parse()?;
+
+        let mut dtstart = None;
+        let mut rrule = Vec::new();
+        let mut rdate = Vec::new();
+        let mut exrule = Vec::new();
+        let mut exdate = Vec::new();
+
+        for property in properties.properties {
+            match property.name.as_str() {
+                "DTSTART" => {
+                    dtstart = Some(DtStart::try_from(property)?);
+                }
+                "RRULE" => {
+                    rrule.push(RRule::try_from(property)?);
+                }
+                "RDATE" => {
+                    rdate.push(RDate::try_from(property)?);
+                }
+                "EXRULE" => {
+                    exrule.push(RRule::try_from(property)?);
+                }
+                "EXDATE" => {
+                    exdate.push(RDate::try_from(property)?);
+                }
+                _ => {
+                    return Err(ParseError::InvalidProperty(format!(
+                        "Unexpected property in RRuleSet: {}",
+                        property.name
+                    )));
+                }
+            }
+        }
+        let dtstart = dtstart
+            .ok_or_else(|| ParseError::InvalidProperty("Missing DTSTART property".to_string()))?;
+
+        Ok(Self {
+            dtstart,
+            rrule,
+            rdate,
+            exrule,
+            exdate,
+        })
     }
 }
