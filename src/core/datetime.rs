@@ -65,7 +65,11 @@ impl DateTime {
                         .map_err(|_| ParseError::InvalidTimezone(tz_str.to_string()))?,
                     None => UTC,
                 };
-                (date.and_hms_opt(0, 0, 0).unwrap(), tz)
+                (
+                    date.and_hms_opt(0, 0, 0)
+                        .expect("00:00:00 is always a valid time"),
+                    tz,
+                )
             }
             Self::Local(naive) => {
                 let tz_str = tzid.ok_or_else(|| {
