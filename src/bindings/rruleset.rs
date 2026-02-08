@@ -21,6 +21,13 @@ impl RRuleSet {
         })
     }
 
+    #[napi(factory)]
+    pub fn from_string(s: String) -> Result<Self> {
+        let rruleset = core::rruleset::RRuleSet::from_str(&s)
+            .map_err(|e| Error::from_reason(e.to_string()))?;
+        Ok(Self { rruleset })
+    }
+
     #[napi(getter)]
     pub fn dtstart(&self) -> String {
         let rfc: core::rfc9557::Rfc9557 = self.rruleset.dtstart().dtstart.clone().into();
