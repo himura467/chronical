@@ -4,14 +4,15 @@ import { RRuleSet as NativeRRuleSet } from "./generated/index.js";
 export class RRuleSet {
   private native: NativeRRuleSet;
 
-  constructor(dtStart: Temporal.ZonedDateTime) {
-    this.native = new NativeRRuleSet(dtStart.toString());
+  constructor(dtStart: Temporal.ZonedDateTime);
+  constructor(native: NativeRRuleSet);
+  constructor(arg: Temporal.ZonedDateTime | NativeRRuleSet) {
+    this.native =
+      arg instanceof NativeRRuleSet ? arg : new NativeRRuleSet(arg.toString());
   }
 
   private static fromNative(native: NativeRRuleSet): RRuleSet {
-    const instance = new RRuleSet(Temporal.ZonedDateTime.from(native.dtStart));
-    instance.native = native;
-    return instance;
+    return new RRuleSet(native);
   }
 
   static fromString(s: string): RRuleSet {
