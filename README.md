@@ -14,15 +14,19 @@ npm install chronical
 
 ```typescript
 import { RRuleSet } from "chronical";
-import { Temporal } from "temporal-polyfill";
 
-const dtStart = Temporal.ZonedDateTime.from("2025-01-01T00:00:00[UTC]");
-const rruleSet = new RRuleSet(dtStart);
+const rruleSet = RRuleSet.fromString(
+  "DTSTART;TZID=Asia/Tokyo:20250101T000000\nRRULE:FREQ=DAILY;COUNT=3",
+);
 
 // Get all occurrences
 const dates = rruleSet.all();
-console.log(dates); // [ ZonedDateTime [Temporal.ZonedDateTime] {} ]
-console.log(dates[0].toString()); // "2025-01-01T00:00:00+00:00[UTC]"
+console.log(dates.map((d) => d.toString()));
+// [
+//   "2025-01-01T00:00:00+09:00[Asia/Tokyo]",
+//   "2025-01-02T00:00:00+09:00[Asia/Tokyo]",
+//   "2025-01-03T00:00:00+09:00[Asia/Tokyo]",
+// ]
 ```
 
 ## License

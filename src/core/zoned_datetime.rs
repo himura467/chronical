@@ -22,6 +22,12 @@ impl From<ZonedDateTime> for Rfc9557 {
     }
 }
 
+impl From<&ZonedDateTime> for Rfc9557 {
+    fn from(zdt: &ZonedDateTime) -> Self {
+        Self::new(zdt.datetime, zdt.calendar.clone())
+    }
+}
+
 impl From<Rfc9557> for ZonedDateTime {
     fn from(rfc: Rfc9557) -> Self {
         Self {

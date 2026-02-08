@@ -4,14 +4,14 @@ import { RRule as NativeRRule, type Frequency } from "./generated/index.js";
 export class RRule {
   private native: NativeRRule;
 
-  constructor(freq: Frequency) {
-    this.native = new NativeRRule(freq);
+  constructor(freq: Frequency);
+  constructor(native: NativeRRule);
+  constructor(arg: Frequency | NativeRRule) {
+    this.native = arg instanceof NativeRRule ? arg : new NativeRRule(arg);
   }
 
   private static fromNative(native: NativeRRule): RRule {
-    const instance = new RRule(native.freq);
-    instance.native = native;
-    return instance;
+    return new RRule(native);
   }
 
   static fromString(s: string): RRule {
