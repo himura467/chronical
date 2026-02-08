@@ -45,6 +45,10 @@ impl RRuleSet {
         }
     }
 
+    pub fn dtstart(&self) -> &DtStart {
+        &self.dtstart
+    }
+
     pub fn try_into_iter(&self) -> Result<RRuleSetIter, RRuleError> {
         let rruleset = self.clone().build()?;
         Ok(RRuleSetIter::new(rruleset.into_iter()))
