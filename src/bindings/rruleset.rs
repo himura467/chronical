@@ -30,8 +30,7 @@ impl RRuleSet {
 
     #[napi(getter)]
     pub fn dt_start(&self) -> String {
-        let rfc: core::rfc9557::Rfc9557 = self.rruleset.dtstart().dtstart.clone().into();
-        rfc.to_string()
+        core::rfc9557::Rfc9557::from(&self.rruleset.dtstart().dtstart).to_string()
     }
 
     #[napi]
