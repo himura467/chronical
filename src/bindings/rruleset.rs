@@ -21,6 +21,12 @@ impl RRuleSet {
         })
     }
 
+    #[napi(getter)]
+    pub fn dtstart(&self) -> String {
+        let rfc: core::rfc9557::Rfc9557 = self.rruleset.dtstart().dtstart.clone().into();
+        rfc.to_string()
+    }
+
     #[napi]
     pub fn all(&self) -> Result<Vec<String>> {
         self.rruleset
