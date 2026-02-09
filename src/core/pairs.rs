@@ -27,6 +27,19 @@ impl Pairs {
         self.pairs.insert(normalized_key, normalized_value);
     }
 
+    /// Insert a key with comma-separated values
+    /// Does nothing if `values` is empty
+    pub fn insert_csv<T: fmt::Display>(&mut self, key: String, values: &[T]) {
+        if !values.is_empty() {
+            let csv: String = values
+                .iter()
+                .map(|v| v.to_string())
+                .collect::<Vec<_>>()
+                .join(",");
+            self.insert(key, csv);
+        }
+    }
+
     pub fn get(&self, key: &str) -> Option<&String> {
         self.pairs.get(&key.to_uppercase())
     }

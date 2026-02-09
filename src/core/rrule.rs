@@ -1,10 +1,13 @@
 use super::frequency::Frequency;
+use super::pairs::Pairs;
 use super::property::{Property, Value};
+use super::rfc9557::Rfc9557;
 use super::weekday::Weekday;
 use super::weekday_num::WeekdayNum;
 use super::zoned_datetime::ZonedDateTime;
 use crate::error::{ParseError, RRuleError};
 use chrono::{DateTime, Month};
+use std::fmt;
 use std::str::FromStr;
 
 #[derive(Clone)]
@@ -84,6 +87,50 @@ impl RRule {
         builder
             .validate(dtstart)
             .map_err(|e| RRuleError::ValidationError(e.to_string()))
+    }
+}
+
+impl fmt::Display for RRule {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{}", Property::from(self))
+    }
+}
+
+impl FromStr for RRule {
+    type Err = ParseError;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        let property: Property = s.parse()?;
+        Self::try_from(property)
+    }
+}
+
+impl From<&RRule> for Property {
+    fn from(rrule: &RRule) -> Self {
+        let mut pairs = Pairs::new();
+        pairs.insert("FREQ".to_string(), rrule.freq.to_string());
+        if let Some(until) = &rrule.until {
+            pairs.insert("UNTIL".to_string(), Rfc9557::from(until).to_string());
+        }
+        if let Some(count) = rrule.count {
+            pairs.insert("COUNT".to_string(), count.to_string());
+        }
+        if let Some(interval) = rrule.interval {
+            pairs.insert("INTERVAL".to_string(), interval.to_string());
+        }
+        pairs.insert_csv("BYSECOND".to_string(), &rrule.by_second);
+        pairs.insert_csv("BYMINUTE".to_string(), &rrule.by_minute);
+        pairs.insert_csv("BYHOUR".to_string(), &rrule.by_hour);
+        pairs.insert_csv("BYDAY".to_string(), &rrule.by_day);
+        pairs.insert_csv("BYMONTHDAY".to_string(), &rrule.by_month_day);
+        pairs.insert_csv("BYYEARDAY".to_string(), &rrule.by_year_day);
+        pairs.insert_csv("BYWEEKNO".to_string(), &rrule.by_week_no);
+        pairs.insert_csv("BYMONTH".to_string(), &rrule.by_month);
+        pairs.insert_csv("BYSETPOS".to_string(), &rrule.by_set_pos);
+        if let Some(wkst) = rrule.wkst {
+            pairs.insert("WKST".to_string(), wkst.to_string());
+        }
+        Property::new("RRULE".to_string(), Pairs::new(), Value::Pairs(pairs))
     }
 }
 
@@ -169,14 +216,5 @@ impl TryFrom<Property> for RRule {
             by_set_pos,
             wkst,
         })
-    }
-}
-
-impl FromStr for RRule {
-    type Err = ParseError;
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let property: Property = s.parse()?;
-        Self::try_from(property)
     }
 }
