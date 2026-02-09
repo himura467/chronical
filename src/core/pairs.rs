@@ -46,6 +46,10 @@ impl Pairs {
             .map(|v| v.split(',').map(|s| s.parse()).collect())
             .transpose()
     }
+
+    pub fn is_empty(&self) -> bool {
+        self.pairs.is_empty()
+    }
 }
 
 impl fmt::Display for Pairs {
