@@ -1,4 +1,5 @@
 use std::collections::HashMap;
+use std::fmt;
 
 /// Key-value pairs
 pub struct Pairs {
@@ -44,5 +45,19 @@ impl Pairs {
         self.get(key)
             .map(|v| v.split(',').map(|s| s.parse()).collect())
             .transpose()
+    }
+}
+
+impl fmt::Display for Pairs {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let mut first = true;
+        for (key, value) in &self.pairs {
+            if !first {
+                write!(f, ";")?;
+            }
+            write!(f, "{}={}", key, value)?;
+            first = false;
+        }
+        Ok(())
     }
 }
