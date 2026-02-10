@@ -138,9 +138,9 @@ impl TryFrom<Property> for RRule {
     type Error = ParseError;
 
     fn try_from(property: Property) -> Result<Self, Self::Error> {
-        if property.name != "RRULE" && property.name != "EXRULE" {
+        if property.name != "RRULE" {
             return Err(ParseError::InvalidProperty(format!(
-                "Expected RRULE or EXRULE property, got {}",
+                "Expected RRULE property, got {}",
                 property.name
             )));
         }
