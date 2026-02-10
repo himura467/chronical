@@ -2,24 +2,24 @@ use super::datetime::ICalDateTime;
 use super::property::{Property, Value};
 use crate::error::ParseError;
 
-/// Represents the RDATE property from iCalendar
+/// Represents the EXDATE property from iCalendar
 ///
-/// RDATE defines the list of DATE-TIME values for recurring events,
+/// EXDATE defines the list of DATE-TIME exceptions for recurring events,
 /// to-dos, journal entries, or time zone definitions
 #[derive(Clone)]
-pub struct RDate {
+pub struct ExDate {
     pub values: Vec<ICalDateTime>,
     pub tzid: Option<String>,
     pub value_type: Option<String>,
 }
 
-impl TryFrom<Property> for RDate {
+impl TryFrom<Property> for ExDate {
     type Error = ParseError;
 
     fn try_from(property: Property) -> Result<Self, Self::Error> {
-        if property.name != "RDATE" {
+        if property.name != "EXDATE" {
             return Err(ParseError::InvalidProperty(format!(
-                "Expected RDATE property, got {}",
+                "Expected EXDATE property, got {}",
                 property.name
             )));
         }
@@ -33,7 +33,7 @@ impl TryFrom<Property> for RDate {
                 .collect::<Result<Vec<ICalDateTime>, ParseError>>()?,
             Value::Pairs(_) => {
                 return Err(ParseError::InvalidProperty(
-                    "RDATE value must be a list of DATE-TIME values".to_string(),
+                    "EXDATE value must be a list of DATE-TIME values".to_string(),
                 ));
             }
         };
