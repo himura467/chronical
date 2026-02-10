@@ -18,6 +18,10 @@ export class RRule {
     return RRule.fromNative(NativeRRule.fromString(s));
   }
 
+  toString(): string {
+    return this.native.toString();
+  }
+
   get freq(): Frequency {
     return this.native.freq;
   }
