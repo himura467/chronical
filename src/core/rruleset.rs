@@ -1,4 +1,5 @@
 use super::dtstart::DtStart;
+use super::exdate::ExDate;
 use super::properties::Properties;
 use super::rdate::RDate;
 use super::rfc9557::Rfc9557;
@@ -30,7 +31,7 @@ pub struct RRuleSet {
     dtstart: DtStart,
     rrule: Vec<RRule>,
     rdate: Vec<RDate>,
-    exdate: Vec<RDate>,
+    exdate: Vec<ExDate>,
 }
 
 impl RRuleSet {
@@ -148,7 +149,7 @@ impl FromStr for RRuleSet {
                     rdate.push(RDate::try_from(property)?);
                 }
                 "EXDATE" => {
-                    exdate.push(RDate::try_from(property)?);
+                    exdate.push(ExDate::try_from(property)?);
                 }
                 _ => {
                     return Err(ParseError::InvalidProperty(format!(
