@@ -1,4 +1,5 @@
 use std::collections::HashMap;
+use std::fmt;
 
 /// Key-value pairs
 pub struct Pairs {
@@ -26,6 +27,19 @@ impl Pairs {
         self.pairs.insert(normalized_key, normalized_value);
     }
 
+    /// Insert a key with comma-separated values
+    /// Does nothing if `values` is empty
+    pub fn insert_csv<T: fmt::Display>(&mut self, key: String, values: &[T]) {
+        if !values.is_empty() {
+            let csv: String = values
+                .iter()
+                .map(|v| v.to_string())
+                .collect::<Vec<_>>()
+                .join(",");
+            self.insert(key, csv);
+        }
+    }
+
     pub fn get(&self, key: &str) -> Option<&String> {
         self.pairs.get(&key.to_uppercase())
     }
@@ -44,5 +58,23 @@ impl Pairs {
         self.get(key)
             .map(|v| v.split(',').map(|s| s.parse()).collect())
             .transpose()
+    }
+
+    pub fn is_empty(&self) -> bool {
+        self.pairs.is_empty()
+    }
+}
+
+impl fmt::Display for Pairs {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let mut first = true;
+        for (key, value) in &self.pairs {
+            if !first {
+                write!(f, ";")?;
+            }
+            write!(f, "{}={}", key, value)?;
+            first = false;
+        }
+        Ok(())
     }
 }

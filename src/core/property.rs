@@ -1,11 +1,21 @@
 use super::pairs::Pairs;
 use crate::error::ParseError;
+use std::fmt;
 use std::str::FromStr;
 
 /// Property value
 pub enum Value {
     Single(String),
     Pairs(Pairs),
+}
+
+impl fmt::Display for Value {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::Single(s) => write!(f, "{}", s),
+            Self::Pairs(p) => write!(f, "{}", p),
+        }
+    }
 }
 
 /// iCalendar property
@@ -18,7 +28,7 @@ pub enum Value {
 /// RDATE;VALUE=DATE:19970304,19970504,19970704,19970904
 /// ```
 pub struct Property {
-    /// The property name (e.g., DTSTART, RRULE, EXRULE, RDATE, EXDATE)
+    /// The property name (e.g., DTSTART, RRULE, RDATE, EXDATE)
     pub name: String,
     /// Property parameters as key-value pairs (e.g., TZID=America/New_York)
     pub parameters: Pairs,
@@ -57,6 +67,16 @@ impl Property {
             pairs.insert(k.to_string(), v.to_string());
         }
         Ok(Value::Pairs(pairs))
+    }
+}
+
+impl fmt::Display for Property {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        if self.parameters.is_empty() {
+            write!(f, "{}:{}", self.name, self.value)
+        } else {
+            write!(f, "{};{}:{}", self.name, self.parameters, self.value)
+        }
     }
 }
 

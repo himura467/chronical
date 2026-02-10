@@ -3,6 +3,7 @@
 export declare class RRule {
   constructor(freq: Frequency)
   static fromString(s: string): RRule
+  toString(): string
   get freq(): Frequency
   get until(): string | null
   get count(): number | null

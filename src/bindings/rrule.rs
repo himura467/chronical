@@ -25,6 +25,12 @@ impl RRule {
         Ok(Self { rrule })
     }
 
+    #[napi]
+    #[allow(clippy::inherent_to_string)]
+    pub fn to_string(&self) -> Result<String> {
+        Ok(self.rrule.to_string())
+    }
+
     #[napi(getter)]
     pub fn freq(&self) -> Frequency {
         self.rrule.freq.into()
