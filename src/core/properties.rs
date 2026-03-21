@@ -17,8 +17,15 @@ pub struct Properties {
 }
 
 impl Properties {
-    pub fn new(properties: Vec<Property>) -> Self {
-        Self { properties }
+    pub fn new() -> Self {
+        Self {
+            properties: Vec::new(),
+        }
+    }
+
+    pub fn push(mut self, property: Property) -> Self {
+        self.properties.push(property);
+        self
     }
 }
 
