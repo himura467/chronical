@@ -32,13 +32,8 @@ impl Properties {
 
 impl fmt::Display for Properties {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let mut first = true;
         for property in &self.properties {
-            if !first {
-                writeln!(f)?;
-            }
-            write!(f, "{}", property)?;
-            first = false;
+            write!(f, "{}\r\n", property)?;
         }
         Ok(())
     }
