@@ -1,4 +1,5 @@
 use super::datetime::ICalDateTime;
+use super::pairs::Pairs;
 use super::property::{Property, Value};
 use super::zoned_datetime::ZonedDateTime;
 use crate::error::ParseError;
@@ -14,6 +15,21 @@ pub struct DtStart {
 impl DtStart {
     pub fn new(dtstart: ZonedDateTime) -> Self {
         Self { dtstart }
+    }
+}
+
+impl From<&DtStart> for Property {
+    fn from(dtstart: &DtStart) -> Self {
+        let datetime = &dtstart.dtstart.datetime;
+        let tz = datetime.timezone();
+        let mut parameters = Pairs::new();
+        let value = if tz.name() == "UTC" {
+            Value::Single(datetime.format("%Y%m%dT%H%M%SZ").to_string())
+        } else {
+            parameters.insert("TZID".to_string(), tz.name().to_string());
+            Value::Single(datetime.format("%Y%m%dT%H%M%S").to_string())
+        };
+        Property::new("DTSTART".to_string(), parameters, value)
     }
 }
 

@@ -1,6 +1,7 @@
 use super::dtstart::DtStart;
 use super::exdate::ExDate;
 use super::properties::Properties;
+use super::property::Property;
 use super::rdate::RDate;
 use super::rfc9557::Rfc9557;
 use super::rrule::RRule;
@@ -8,6 +9,7 @@ use super::rruleset_iter::RRuleSetIter;
 use super::zoned_datetime::ZonedDateTime;
 use crate::error::{ParseError, RRuleError};
 use chrono::DateTime;
+use std::fmt;
 use std::str::FromStr;
 
 fn is_before(zdt: &ZonedDateTime, before: &ZonedDateTime, inclusive: bool) -> bool {
@@ -123,6 +125,22 @@ impl RRuleSet {
         }
 
         Ok(builder)
+    }
+}
+
+impl fmt::Display for RRuleSet {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let mut builder = Properties::new().push(Property::from(&self.dtstart));
+        for rrule in &self.rrule {
+            builder = builder.push(Property::from(rrule));
+        }
+        for rdate in &self.rdate {
+            builder = builder.push(Property::from(rdate));
+        }
+        for exdate in &self.exdate {
+            builder = builder.push(Property::from(exdate));
+        }
+        write!(f, "{}", builder)
     }
 }
 

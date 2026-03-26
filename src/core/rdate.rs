@@ -1,4 +1,5 @@
 use super::datetime::ICalDateTime;
+use super::pairs::Pairs;
 use super::property::{Property, Value};
 use crate::error::ParseError;
 
@@ -11,6 +12,25 @@ pub struct RDate {
     pub values: Vec<ICalDateTime>,
     pub tzid: Option<String>,
     pub value_type: Option<String>,
+}
+
+impl From<&RDate> for Property {
+    fn from(rdate: &RDate) -> Self {
+        let mut parameters = Pairs::new();
+        if let Some(tzid) = &rdate.tzid {
+            parameters.insert("TZID".to_string(), tzid.clone());
+        }
+        if let Some(value_type) = &rdate.value_type {
+            parameters.insert("VALUE".to_string(), value_type.clone());
+        }
+        let value_str = rdate
+            .values
+            .iter()
+            .map(|v| v.to_string())
+            .collect::<Vec<_>>()
+            .join(",");
+        Property::new("RDATE".to_string(), parameters, Value::Single(value_str))
+    }
 }
 
 impl TryFrom<Property> for RDate {

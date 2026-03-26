@@ -2,23 +2,8 @@ use super::zoned_datetime::ZonedDateTime;
 use crate::error::ParseError;
 use chrono::{NaiveDate, NaiveDateTime, TimeZone};
 use chrono_tz::{Tz, UTC};
+use std::fmt;
 use std::str::FromStr;
-
-/// Represents a parsed iCalendar DATE or DATE-TIME value
-///
-/// Variants correspond to the three iCalendar temporal formats:
-/// - `Date` — `YYYYMMDD`
-/// - `Local` — `YYYYMMDDTHHmmss` (requires TZID for timezone resolution)
-/// - `Utc` — `YYYYMMDDTHHmmssZ`
-#[derive(Clone)]
-pub enum ICalDateTime {
-    /// DATE value (YYYYMMDD)
-    Date(NaiveDate),
-    /// Local DATE-TIME value (YYYYMMDDTHHmmss)
-    Local(NaiveDateTime),
-    /// UTC DATE-TIME value (YYYYMMDDTHHmmssZ)
-    Utc(NaiveDateTime),
-}
 
 /// Parses an iCalendar DATE-TIME string (`YYYYMMDDTHHmmss`), clamping any
 /// leap second (second=60) to 59 per RFC 5545:
@@ -35,20 +20,20 @@ fn parse_datetime(s: &str) -> Result<NaiveDateTime, ParseError> {
         .map_err(|_| ParseError::InvalidDateTime(s.to_string()))
 }
 
-impl FromStr for ICalDateTime {
-    type Err = ParseError;
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        if let Some(rest) = s.strip_suffix('Z') {
-            Ok(Self::Utc(parse_datetime(rest)?))
-        } else if s.contains('T') {
-            Ok(Self::Local(parse_datetime(s)?))
-        } else {
-            let date = NaiveDate::parse_from_str(s, "%Y%m%d")
-                .map_err(|_| ParseError::InvalidDateTime(s.to_string()))?;
-            Ok(Self::Date(date))
-        }
-    }
+/// Represents a parsed iCalendar DATE or DATE-TIME value
+///
+/// Variants correspond to the three iCalendar temporal formats:
+/// - `Date` — `YYYYMMDD`
+/// - `Local` — `YYYYMMDDTHHmmss` (requires TZID for timezone resolution)
+/// - `Utc` — `YYYYMMDDTHHmmssZ`
+#[derive(Clone)]
+pub enum ICalDateTime {
+    /// DATE value (YYYYMMDD)
+    Date(NaiveDate),
+    /// Local DATE-TIME value (YYYYMMDDTHHmmss)
+    Local(NaiveDateTime),
+    /// UTC DATE-TIME value (YYYYMMDDTHHmmssZ)
+    Utc(NaiveDateTime),
 }
 
 impl ICalDateTime {
@@ -103,5 +88,31 @@ impl ICalDateTime {
         })?;
 
         Ok(ZonedDateTime::new(datetime, None))
+    }
+}
+
+impl fmt::Display for ICalDateTime {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::Date(nd) => write!(f, "{}", nd.format("%Y%m%d")),
+            Self::Local(ndt) => write!(f, "{}", ndt.format("%Y%m%dT%H%M%S")),
+            Self::Utc(ndt) => write!(f, "{}Z", ndt.format("%Y%m%dT%H%M%S")),
+        }
+    }
+}
+
+impl FromStr for ICalDateTime {
+    type Err = ParseError;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        if let Some(rest) = s.strip_suffix('Z') {
+            Ok(Self::Utc(parse_datetime(rest)?))
+        } else if s.contains('T') {
+            Ok(Self::Local(parse_datetime(s)?))
+        } else {
+            let date = NaiveDate::parse_from_str(s, "%Y%m%d")
+                .map_err(|_| ParseError::InvalidDateTime(s.to_string()))?;
+            Ok(Self::Date(date))
+        }
     }
 }
