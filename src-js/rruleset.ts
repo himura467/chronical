@@ -19,6 +19,10 @@ export class RRuleSet {
     return RRuleSet.fromNative(NativeRRuleSet.fromString(s));
   }
 
+  toString(): string {
+    return this.native.toString();
+  }
+
   all(): Temporal.ZonedDateTime[] {
     return this.native.all().map((date) => Temporal.ZonedDateTime.from(date));
   }

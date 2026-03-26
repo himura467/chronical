@@ -22,8 +22,9 @@ export declare class RRule {
 
 export declare class RRuleSet {
   constructor(dtStart: string)
-  static fromString(s: string): RRuleSet
   get dtStart(): string
+  static fromString(s: string): RRuleSet
+  toString(): string
   all(): Array<string>
   between(after: string, before: string, inclusive?: boolean | undefined | null): Array<string>
 }

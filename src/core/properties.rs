@@ -1,5 +1,6 @@
 use super::property::Property;
 use crate::error::ParseError;
+use std::fmt;
 use std::str::FromStr;
 
 /// A collection of iCalendar properties
@@ -17,8 +18,24 @@ pub struct Properties {
 }
 
 impl Properties {
-    pub fn new(properties: Vec<Property>) -> Self {
-        Self { properties }
+    pub fn new() -> Self {
+        Self {
+            properties: Vec::new(),
+        }
+    }
+
+    pub fn push(mut self, property: Property) -> Self {
+        self.properties.push(property);
+        self
+    }
+}
+
+impl fmt::Display for Properties {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        for property in &self.properties {
+            write!(f, "{}\r\n", property)?;
+        }
+        Ok(())
     }
 }
 
