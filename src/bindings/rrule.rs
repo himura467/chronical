@@ -12,10 +12,10 @@ pub struct RRule {
 #[napi]
 impl RRule {
     #[napi(constructor)]
-    pub fn new(freq: Frequency) -> Self {
-        Self {
+    pub fn new(freq: Frequency) -> Result<Self> {
+        Ok(Self {
             rrule: core::rrule::RRule::new(freq.into()),
-        }
+        })
     }
 
     #[napi(factory)]
@@ -26,81 +26,80 @@ impl RRule {
     }
 
     #[napi]
-    #[allow(clippy::inherent_to_string)]
     pub fn to_string(&self) -> Result<String> {
         Ok(self.rrule.to_string())
     }
 
     #[napi(getter)]
-    pub fn freq(&self) -> Frequency {
-        self.rrule.freq.into()
+    pub fn freq(&self) -> Result<Frequency> {
+        Ok(self.rrule.freq.into())
     }
 
     #[napi(getter)]
-    pub fn until(&self) -> Option<String> {
-        self.rrule.until.clone().map(|zdt| {
+    pub fn until(&self) -> Result<Option<String>> {
+        Ok(self.rrule.until.clone().map(|zdt| {
             let rfc: core::rfc9557::Rfc9557 = zdt.into();
             rfc.to_string()
-        })
+        }))
     }
 
     #[napi(getter)]
-    pub fn count(&self) -> Option<u32> {
-        self.rrule.count
+    pub fn count(&self) -> Result<Option<u32>> {
+        Ok(self.rrule.count)
     }
 
     #[napi(getter)]
-    pub fn interval(&self) -> Option<u16> {
-        self.rrule.interval
+    pub fn interval(&self) -> Result<Option<u16>> {
+        Ok(self.rrule.interval)
     }
 
     #[napi(getter)]
-    pub fn by_second(&self) -> Vec<u8> {
-        self.rrule.by_second.clone()
+    pub fn by_second(&self) -> Result<Vec<u8>> {
+        Ok(self.rrule.by_second.clone())
     }
 
     #[napi(getter)]
-    pub fn by_minute(&self) -> Vec<u8> {
-        self.rrule.by_minute.clone()
+    pub fn by_minute(&self) -> Result<Vec<u8>> {
+        Ok(self.rrule.by_minute.clone())
     }
 
     #[napi(getter)]
-    pub fn by_hour(&self) -> Vec<u8> {
-        self.rrule.by_hour.clone()
+    pub fn by_hour(&self) -> Result<Vec<u8>> {
+        Ok(self.rrule.by_hour.clone())
     }
 
     #[napi(getter)]
-    pub fn by_day(&self) -> Vec<String> {
-        self.rrule.by_day.iter().map(|wn| wn.to_string()).collect()
+    pub fn by_day(&self) -> Result<Vec<String>> {
+        Ok(self.rrule.by_day.iter().map(|wn| wn.to_string()).collect())
     }
 
     #[napi(getter)]
-    pub fn by_month_day(&self) -> Vec<i8> {
-        self.rrule.by_month_day.clone()
+    pub fn by_month_day(&self) -> Result<Vec<i8>> {
+        Ok(self.rrule.by_month_day.clone())
     }
 
     #[napi(getter)]
-    pub fn by_year_day(&self) -> Vec<i16> {
-        self.rrule.by_year_day.clone()
+    pub fn by_year_day(&self) -> Result<Vec<i16>> {
+        Ok(self.rrule.by_year_day.clone())
     }
 
     #[napi(getter)]
-    pub fn by_week_no(&self) -> Vec<i8> {
-        self.rrule.by_week_no.clone()
+    pub fn by_week_no(&self) -> Result<Vec<i8>> {
+        Ok(self.rrule.by_week_no.clone())
     }
 
     #[napi(getter)]
-    pub fn by_month(&self) -> Vec<u8> {
-        self.rrule.by_month.clone()
+    pub fn by_month(&self) -> Result<Vec<u8>> {
+        Ok(self.rrule.by_month.clone())
     }
 
     #[napi(getter)]
-    pub fn by_set_pos(&self) -> Vec<i32> {
-        self.rrule.by_set_pos.clone()
+    pub fn by_set_pos(&self) -> Result<Vec<i32>> {
+        Ok(self.rrule.by_set_pos.clone())
     }
 
     #[napi(getter)]
-    pub fn wkst(&self) -> Option<String> {
-        self.rrule.wkst.map(|w| w.to_string())
+    pub fn wkst(&self) -> Result<Option<String>> {
+        Ok(self.rrule.wkst.map(|w| w.to_string()))
     }
 }

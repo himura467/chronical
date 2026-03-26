@@ -22,8 +22,8 @@ impl RRuleSet {
     }
 
     #[napi(getter)]
-    pub fn dt_start(&self) -> String {
-        core::rfc9557::Rfc9557::from(&self.rruleset.dtstart().dtstart).to_string()
+    pub fn dt_start(&self) -> Result<String> {
+        Ok(core::rfc9557::Rfc9557::from(&self.rruleset.dtstart().dtstart).to_string())
     }
 
     #[napi(factory)]
@@ -33,10 +33,9 @@ impl RRuleSet {
         Ok(Self { rruleset })
     }
 
-    #[allow(clippy::inherent_to_string)]
     #[napi]
-    pub fn to_string(&self) -> String {
-        self.rruleset.to_string()
+    pub fn to_string(&self) -> Result<String> {
+        Ok(self.rruleset.to_string())
     }
 
     #[napi]
