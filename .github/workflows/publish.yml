@@ -12,22 +12,25 @@ jobs:
         include:
           - os: macos-latest
             target: aarch64-apple-darwin
-            build: pnpm build:rust --target aarch64-apple-darwin && pnpm build:ts
+            build: pnpm build:rust --target aarch64-apple-darwin
           - os: windows-latest
             target: aarch64-pc-windows-msvc
-            build: pnpm build:rust --target aarch64-pc-windows-msvc && pnpm build:ts
+            build: pnpm build:rust --target aarch64-pc-windows-msvc
           - os: ubuntu-latest
             target: aarch64-unknown-linux-gnu
-            build: pnpm build:rust --target aarch64-unknown-linux-gnu --use-napi-cross && pnpm build:ts
+            build: pnpm build:rust --target aarch64-unknown-linux-gnu --use-napi-cross
           - os: macos-latest
             target: x86_64-apple-darwin
-            build: pnpm build:rust --target x86_64-apple-darwin && pnpm build:ts
+            build: pnpm build:rust --target x86_64-apple-darwin
           - os: windows-latest
             target: x86_64-pc-windows-msvc
-            build: pnpm build:rust --target x86_64-pc-windows-msvc && pnpm build:ts
+            build: pnpm build:rust --target x86_64-pc-windows-msvc
           - os: ubuntu-latest
             target: x86_64-unknown-linux-gnu
-            build: pnpm build:rust --target x86_64-unknown-linux-gnu -x && pnpm build:ts
+            build: pnpm build:rust --target x86_64-unknown-linux-gnu -x
+          - os: ubuntu-latest
+            target: wasm32-wasip1-threads
+            build: pnpm build:rust --target wasm32-wasip1-threads
     name: Build ${{ matrix.target }}
     runs-on: ${{ matrix.os }}
     steps:
@@ -54,7 +57,9 @@ jobs:
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with:
           name: bindings-${{ matrix.target }}
-          path: 'src-js/generated/*.node'
+          path: |
+            src-js/generated/chronical.*.node
+            src-js/generated/chronical.*.wasm
           if-no-files-found: error
   publish:
     name: Publish
@@ -82,7 +87,7 @@ jobs:
       - name: Create npm dirs
         run: pnpm napi create-npm-dirs
       - name: Move artifacts
-        run: pnpm artifacts
+        run: pnpm artifacts --build-output-dir src-js/generated
       - name: List packages
         run: ls -R ./npm
         shell: bash
@@ -90,5 +95,6 @@ jobs:
         run: npm install -g npm@latest # Trusted publishing requires npm CLI version 11.5.1 or later
       - name: Publish
         run: |
+          pnpm build:ts
           pnpm prepublishOnly --no-gh-release
           pnpm publish --provenance --access public --no-git-checks
