@@ -7,6 +7,7 @@
     "url": "git+ssh://git@github.com/himura467/chronical.git"
   },
   "main": "dist/index.js",
+  "browser": "dist/browser.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
@@ -52,7 +53,13 @@
       "x86_64-pc-windows-msvc",
       "x86_64-unknown-linux-gnu",
       "wasm32-wasip1-threads"
-    ]
+    ],
+    "wasm": {
+      "browser": {
+        "asyncInit": true,
+        "fs": false
+      }
+    }
   },
   "engines": {
     "node": ">= 20"
